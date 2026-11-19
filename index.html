@@ -1,0 +1,3267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kuis Interaktif UKPPPG 2026 — Informatika (80 Soal Studi Kasus HOTS)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    pre, code, kbd {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+
+  <!-- Sticky Top Bar -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-2xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Brand & Title -->
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 text-white flex items-center justify-center font-extrabold text-xs shadow-sm shrink-0">
+            IF-80
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="text-sm sm:text-base font-extrabold text-slate-900 truncate">
+                UTBK UKPPPG 2026 • Informatika
+              </h1>
+              <span id="modeBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                Mode Latihan
+              </span>
+              <span id="saveIndicator" class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                ● Tersimpan Lokal
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 truncate">
+              80 Soal Studi Kasus HOTS • 50 PCK Informatika & 30 Pedagogi Umum (PG Tunggal, PGK Benar/Salah, PGK MCMA)
+            </p>
+          </div>
+        </div>
+
+        <!-- Live Stats & Action Buttons -->
+        <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+          <div id="timerChip" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-xs font-mono font-bold text-amber-900" title="Sisa Waktu Simulasi Ujian (120 menit)">
+            <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="timerDisplay">120:00</span>
+          </div>
+
+          <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700">
+            <span>Terjawab:</span>
+            <span id="headerAnswered" class="text-blue-700 font-bold">0/80</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800">
+            <span id="scoreLabel">Tepat:</span>
+            <span id="headerScore" class="font-extrabold">0/80</span>
+          </div>
+
+          <button
+            type="button"
+            id="openJuknisBtn"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-800 border border-violet-200 text-xs sm:text-sm font-bold transition cursor-pointer"
+            title="Panduan Juknis UKPPPG 2026 & Laporan Studi Kasus"
+          >
+            <svg class="w-4 h-4 text-violet-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            <span class="hidden sm:inline">Panduan Juknis</span>
+          </button>
+
+          <button
+            type="button"
+            id="openNavModalBtn"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs sm:text-sm font-bold shadow-2xs transition cursor-pointer"
+            title="Buka Peta 80 Soal"
+          >
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+            <span>Peta (80)</span>
+          </button>
+
+          <button
+            type="button"
+            id="resetTopBtn"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 text-slate-600 border border-slate-200 text-xs sm:text-sm font-semibold transition cursor-pointer"
+            title="Reset Jawaban"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span class="hidden md:inline">Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mt-3 flex items-center gap-3">
+        <div class="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/70">
+          <div id="progressBarFill" class="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-full transition-all duration-300" style="width: 1.25%"></div>
+        </div>
+        <span id="progressText" class="text-xs font-bold text-slate-600 shrink-0">
+          Soal 1 / 80
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+    <!-- Mode & Filter Control Bar -->
+    <div class="mb-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-4">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Mode & Filter Latihan UTBK UKPPPG</h2>
+            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+              Komposisi Resmi: 50 PCK + 30 Pedagogi Umum = 80 Soal
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+            <strong>Mode Latihan</strong> menampilkan umpan balik instan & pembahasan tiap soal; <strong>Mode Simulasi Ujian</strong> mengaktifkan hitung mundur (120 menit) dan evaluasi menyeluruh saat selesai.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 shrink-0">
+          <button
+            type="button"
+            id="modePracticeBtn"
+            class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition cursor-pointer flex items-center gap-2"
+          >
+            <span>📘 Mode Latihan</span>
+          </button>
+          <button
+            type="button"
+            id="modeExamBtn"
+            class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition cursor-pointer flex items-center gap-2"
+          >
+            <span>⏱️ Mode Simulasi Ujian</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Domain & Format Filter Row -->
+      <div class="pt-3.5 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <!-- Domain Filter -->
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="text-xs font-bold text-slate-500 mr-1">Domain:</span>
+          <button type="button" data-domain="ALL" class="domain-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer"></button>
+          <button type="button" data-domain="PCK" class="domain-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer"></button>
+          <button type="button" data-domain="PEDAGOGI" class="domain-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer"></button>
+        </div>
+
+        <!-- Format Filter -->
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="text-xs font-bold text-slate-500 mr-1">Bentuk Soal:</span>
+          <button type="button" data-format="ALL" class="format-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer">Semua</button>
+          <button type="button" data-format="PG" class="format-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer">PG Tunggal</button>
+          <button type="button" data-format="BS" class="format-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer">PGK Benar/Salah</button>
+          <button type="button" data-format="MCMA" class="format-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer">PGK MCMA</button>
+        </div>
+      </div>
+
+      <!-- Active Filter Banner (shown when filtered list != 80) -->
+      <div id="filterInfoBanner" class="hidden items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900">
+        <span id="filterInfoText" class="font-semibold"></span>
+        <button type="button" id="clearFiltersBtn" class="font-extrabold underline hover:text-blue-700 cursor-pointer shrink-0">
+          Tampilkan Semua 80 Soal
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Grid: Question Stage + Desktop Sidebar Navigator -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Question Stage (8 cols) -->
+      <section class="lg:col-span-8 space-y-5">
+        <div id="questionCard" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden fade-in">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Navigation & Action Bar -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="button"
+            id="prevBtn"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:pointer-events-none text-slate-800 font-bold text-sm transition cursor-pointer"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Sebelumnya</span>
+          </button>
+
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <button
+              type="button"
+              id="flagBtn"
+              class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+              </svg>
+              <span id="flagBtnText">Ragu-Ragu</span>
+            </button>
+
+            <button
+              type="button"
+              id="finishExamBtn"
+              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Selesai & Rekapitulasi</span>
+            </button>
+          </div>
+
+          <button
+            type="button"
+            id="nextBtn"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:pointer-events-none text-white font-bold text-sm shadow-xs transition cursor-pointer"
+          >
+            <span>Berikutnya</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-400 text-center sm:text-left px-1">
+          Pintasan keyboard: <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-600">←</kbd> / <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-600">→</kbd> pindah soal • <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-600">R</kbd> tandai ragu-ragu • <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-600">1-5</kbd> pilih opsi PG/MCMA
+        </p>
+      </section>
+
+      <!-- Desktop Sidebar Navigator (4 cols) -->
+      <aside class="hidden lg:block lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs sticky top-24">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-extrabold text-slate-900">Navigator 80 Soal</h3>
+          <span id="sidebarSummaryText" class="text-xs font-bold text-slate-500">0/80 dijawab</span>
+        </div>
+
+        <!-- Legend -->
+        <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded bg-blue-600 inline-block"></span>
+            <span>Soal Aktif</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded bg-emerald-100 border border-emerald-400 inline-block"></span>
+            <span>Terjawab</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded bg-amber-100 border border-amber-400 inline-block"></span>
+            <span>Ragu-Ragu</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded bg-white border border-slate-300 inline-block"></span>
+            <span>Kosong</span>
+          </div>
+        </div>
+
+        <div class="space-y-4 max-h-[62vh] overflow-y-auto pr-1">
+          <div>
+            <div class="mb-1.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-blue-700">
+              <span>PCK Informatika (Soal 1–50)</span>
+              <span id="pckAnsweredMini" class="text-slate-400">0/50</span>
+            </div>
+            <div id="sidebarGridPCK" class="grid grid-cols-10 gap-1.5"></div>
+          </div>
+
+          <div>
+            <div class="mb-1.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-indigo-700">
+              <span>Pedagogi Umum (Soal 51–80)</span>
+              <span id="pedAnsweredMini" class="text-slate-400">0/30</span>
+            </div>
+            <div id="sidebarGridPedagogi" class="grid grid-cols-10 gap-1.5"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Evaluation & Breakdown Section -->
+    <section id="summarySection" class="hidden mt-8 space-y-6 fade-in"></section>
+  </main>
+
+  <!-- Modal: 80-Question Grid Map -->
+  <div id="navModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 max-w-2xl w-full p-6 shadow-xl fade-in max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">Peta Lengkap 80 Soal UTBK UKPPPG</h3>
+          <p class="text-xs text-slate-500">50 Soal PCK Informatika (1–50) & 30 Soal Pedagogi Umum (51–80)</p>
+        </div>
+        <button
+          type="button"
+          id="closeNavModalBtn"
+          class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition cursor-pointer"
+          aria-label="Tutup modal"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="mb-2 text-xs font-extrabold uppercase tracking-wider text-blue-700">
+        Domain 1: PCK Informatika (Soal 1–50)
+      </div>
+      <div id="modalGridPCK" class="grid grid-cols-10 gap-1.5 mb-5"></div>
+
+      <div class="mb-2 text-xs font-extrabold uppercase tracking-wider text-indigo-700">
+        Domain 2: Pedagogi Umum (Soal 51–80)
+      </div>
+      <div id="modalGridPedagogi" class="grid grid-cols-10 gap-1.5 mb-5"></div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-3 text-xs text-slate-600">
+          <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-200 border border-emerald-500"></span> Dijawab</span>
+          <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-200 border border-amber-500"></span> Ragu</span>
+        </div>
+        <button
+          type="button"
+          id="modalFinishBtn"
+          class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold cursor-pointer"
+        >
+          Selesai & Rekapitulasi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Juknis & Laporan Studi Kasus Reference -->
+  <div id="juknisModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 max-w-2xl w-full p-6 shadow-xl fade-in max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <div>
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-violet-700">Ringkasan Acuan Resmi</span>
+          <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Petunjuk Teknis UKPPPG Calon Guru 2026 & Studi Kasus</h3>
+        </div>
+        <button
+          type="button"
+          id="closeJuknisModalBtn"
+          class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition cursor-pointer"
+          aria-label="Tutup panduan"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+        <div class="p-4 rounded-xl bg-blue-50/70 border border-blue-200">
+          <h4 class="font-extrabold text-blue-950 mb-1.5">1. Struktur Tes Objektif UTBK (80 Butir Soal)</h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-800">
+            <li><strong>PCK Informatika (50 butir):</strong> Mengintegrasikan pengetahuan pedagogis dengan konten Informatika (Berpikir Komputasional, Sistem Komputer, Jaringan & Internet, Analisis Data, Algoritma & Pemrograman, TIK, Literasi Digital & Keamanan, Dampak Sosial Informatika, AI Kritis, Rekayasa Karya Digital, serta siklus <em>Plan–Do–See</em>).</li>
+            <li><strong>Pedagogi Umum (30 butir):</strong> Pengambilan keputusan pedagogis sesuai karakteristik/kebutuhan murid, teori belajar, diferensiasi & inklusi, model/pendekatan, pembelajaran mendalam (<em>mindful, meaningful, joyful</em>), asesmen & umpan balik, pengelolaan kelas aman, serta 4 kompetensi guru (Pedagogik, Kepribadian, Sosial, Profesional).</li>
+            <li><strong>Bentuk Soal:</strong> <em>PG Tunggal</em> (1 jawaban paling tepat), <em>PGK Benar/Salah</em> (evaluasi 4 pernyataan per kasus), dan <em>PGK MCMA</em> (memilih lebih dari satu opsi benar).</li>
+          </ul>
+        </div>
+
+        <div class="p-4 rounded-xl bg-violet-50/70 border border-violet-200">
+          <h4 class="font-extrabold text-violet-950 mb-1.5">2. Tes Subjektif — Laporan Studi Kasus (UKin & Wawancara)</h4>
+          <ul class="list-disc pl-5 space-y-1 text-slate-800">
+            <li><strong>Batas Panjang & Format:</strong> Esai <strong>maksimal 500 kata</strong>, huruf <strong>Times New Roman ukuran 12 (TNR 12)</strong>, disimpan dalam format <strong>PDF</strong>.</li>
+            <li><strong>Format Nama File:</strong> <code class="px-1.5 py-0.5 bg-white rounded border border-violet-200 text-violet-900 font-bold">Studi Kasus_Nama mahasiswa_NIM</code></li>
+            <li><strong>4 Bagian Utama Studi Kasus:</strong> (1) Deskripsi masalah nyata (kondisi diharapkan, kondisi terjadi, <em>gap</em>), (2) Upaya penyelesaian yang operasional & rasional, (3) Hasil penyelesaian dengan bukti perubahan jelas, dan (4) Refleksi filosofis/nilai pendidikan, pembelajaran bermakna, serta pengembangan profesional berkelanjutan.</li>
+          </ul>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <h4 class="font-extrabold text-slate-900 mb-1.5">3. Strategi Wawancara Menggunakan Metode STAR</h4>
+          <p class="text-slate-700 mb-2">Gunakan sudut pandang <strong>"saya"</strong> (bukan "kami"), sertakan data/angka nyata, dan jaga durasi respons ringkas & sistematis:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+              <strong class="text-blue-700">S — Situation:</strong> Konteks & masalah nyata yang dihadapi.
+            </div>
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+              <strong class="text-blue-700">T — Task:</strong> Peran & target spesifik yang harus diselesaikan.
+            </div>
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+              <strong class="text-blue-700">A — Action:</strong> Langkah konkret & inisiatif pribadi yang dilakukan.
+            </div>
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+              <strong class="text-blue-700">R — Result:</strong> Dampak terukur, bukti perubahan & refleksi.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-end">
+        <button
+          type="button"
+          id="closeJuknisBottomBtn"
+          class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold cursor-pointer"
+        >
+          Mengerti & Lanjutkan Latihan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal (No native alert/confirm) -->
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 max-w-md w-full p-6 shadow-xl fade-in">
+      <h3 id="confirmTitle" class="text-base font-extrabold text-slate-900">Konfirmasi</h3>
+      <p id="confirmMessage" class="text-sm text-slate-600 mt-2 leading-relaxed"></p>
+      <div class="mt-5 flex items-center justify-end gap-2.5">
+        <button
+          type="button"
+          id="confirmCancelBtn"
+          class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition cursor-pointer"
+        >
+          Batal
+        </button>
+        <button
+          type="button"
+          id="confirmOkBtn"
+          class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold transition cursor-pointer"
+        >
+          Ya, Lanjutkan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t border-slate-200 py-4 px-4 sm:px-6 text-center text-xs text-slate-500">
+    Kuis Interaktif UTBK UKPPPG Calon Guru 2026 Bidang Studi Informatika • 80 Soal Studi Kasus HOTS (50 PCK Informatika + 30 Pedagogi Umum)
+  </footer>
+
+  <script>
+    /**
+     * 80 Soal Studi Kasus HOTS UKPPPG 2026 Bidang Studi Informatika
+     * - Soal 1..50  : domain = "PCK" (PCK Informatika)
+     * - Soal 51..80 : domain = "PEDAGOGI" (Pedagogi Umum & 4 Kompetensi Guru)
+     * - format: "PG" (PG Tunggal), "MCMA" (PGK MCMA multi-pilih), "BS" (PGK Benar/Salah 4 pernyataan)
+     */
+    const QUESTIONS = [
+      // =========================================================================
+      // DOMAIN 1: PCK INFORMATIKA (SOAL 1 - 50)
+      // =========================================================================
+      {
+        id: 1,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.1 • Berpikir Komputasional (Dekomposisi — Plan)",
+        title: "Merancang Dekomposisi Masalah Jadwal Ekstrakurikuler Kelas VII",
+        caseText:
+          "Pada tahap Plan pembelajaran Berpikir Komputasional di kelas VII, Bu Ratih ingin murid menguraikan masalah penyusunan jadwal piket dan ekstrakurikuler tanpa bentrok waktu. Hasil asesmen awal menunjukkan sebagian besar murid langsung menulis jadwal secara acak tanpa memecah kriteria atau batasan waktu.",
+        prompt: "Strategi perencanaan PCK manakah yang paling tepat untuk melatih dekomposisi secara bertahap? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menyediakan studi kasus penyusunan jadwal yang dipecah menjadi submasalah: daftar peserta, ketersediaan waktu, dan aturan bebas bentrok." },
+          { key: "B", text: "Meminta murid menghafal definisi dekomposisi dari kamus istilah teknologi sebelum mengerjakan kasus." },
+          { key: "C", text: "Menggunakan kartu tugas terpisah untuk tiap submasalah agar murid melihat hubungan antarbagian sebelum digabungkan." },
+          { key: "D", text: "Mengharuskan murid langsung menulis kode Python kompleks untuk penjadwalan pada pertemuan pertama." }
+        ],
+        correctKeys: ["A", "C"],
+        explanation: "Dekomposisi bermakna saat masalah kompleks dipecah menjadi submasalah yang terkelola dengan bantuan representasi konkret (kartu/bagan submasalah) sesuai kesiapan fase D."
+      },
+      {
+        id: 2,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.5 • Berpikir Komputasional (Pengenalan Pola — Do)",
+        title: "Menemukan Pola pada Barisan Bilangan & Pola Ubin Lantai",
+        caseText:
+          "Saat tahap Do pada materi Pengenalan Pola, Pak Hendra menampilkan pola susunan ubin dekoratif tahap 1 (4 ubin), tahap 2 (7 ubin), dan tahap 3 (10 ubin). Beberapa murid hanya menghitung jumlah ubin tiap tahap satu per satu tanpa melihat selisih tetapnya.",
+        prompt: "Tentukan apakah setiap pernyataan strategi PCK berikut Benar atau Salah.",
+        statements: [
+          { id: "2.1", text: "Meminta murid membandingkan perubahan jumlah ubin antar-tahap membantu mereka menemukan pola penambahan tetap (+3).", correct: "Benar" },
+          { id: "2.2", text: "Guru sebaiknya langsung memberikan rumus umum aljabar di awal tanpa memberi kesempatan murid mengamati pola.", correct: "Salah" },
+          { id: "2.3", text: "Mengajak murid memprediksi jumlah ubin pada tahap ke-5 lalu menguji prediksinya melatih penalaran pola.", correct: "Benar" },
+          { id: "2.4", text: "Pengenalan pola hanya relevan untuk deret angka dan tidak berkaitan dengan pemecahan masalah Informatika.", correct: "Salah" }
+        ],
+        explanation: "Pengenalan pola melatih murid melihat keteraturan/keterulangan fitur atau selisih antar-tahap untuk memprediksi dan menyederhanakan solusi."
+      },
+      {
+        id: 3,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.1 • Berpikir Komputasional (Abstraksi — See)",
+        title: "Refleksi Abstraksi pada Kasus Pembuatan Peta Kampus/Sekolah",
+        caseText:
+          "Pada tahap See setelah praktik pemodelan peta evakuasi sekolah, Bu Diah mendapati banyak murid menggambar detail warna cat dinding, motif keramik, dan merek pot bunga sehingga jalur evakuasi menjadi kabur.",
+        prompt: "Keputusan refleksi dan perbaikan manakah yang paling tepat untuk menguatkan pemahaman abstraksi?",
+        options: [
+          { key: "A", text: "Menambah waktu menggambar agar semua detail visual ruangan dapat tercantum lengkap." },
+          { key: "B", text: "Meminta murid menyeleksi ulang elemen peta: mempertahankan pintu keluar, jalur koridor, dan titik kumpul, sambil menyaring detail yang tidak relevan dengan tujuan evakuasi." },
+          { key: "C", text: "Memberi nilai rendah kepada seluruh murid karena gambarnya tidak menyerupai foto udara." },
+          { key: "D", text: "Mengganti topik abstraksi menjadi menghafal nama-nama perangkat lunak pemetaan." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Abstraksi berarti menyaring informasi penting yang relevan dengan tujuan pemecahan masalah dan mengabaikan detail yang tidak esensial."
+      },
+      {
+        id: 4,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.3 • Algoritma & Flowchart (Unplugged)",
+        title: "Mengatasi Kebingungan Urutan Langkah Algoritma Menyeduh Teh/Kopi",
+        caseText:
+          "Murid kelas VII menyusun diagram alir (flowchart) prosedur menyeduh minuman hangat, tetapi meletakkan simbol proses 'tuang air panas ke gelas' sebelum 'panaskan air hingga mendidih'.",
+        prompt: "Langkah PCK manakah yang paling efektif membantu murid memahami pentingnya urutan instruksi (sekuensial)? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Mensimulasikan eksekusi langkah demi langkah secara harfiah sesuai urutan yang ditulis murid agar terlihat konsekuensi logisnya." },
+          { key: "B", text: "Menyediakan potongan kartu langkah acak untuk diurutkan dan diuji bersama pasangan." },
+          { key: "C", text: "Menghukum murid dengan menyalin ulang simbol flowchart sebanyak 20 kali." },
+          { key: "D", text: "Mengaitkan kegagalan urutan langkah dengan prinsip 'urutan eksekusi menentukan hasil' pada algoritma." }
+        ],
+        correctKeys: ["A", "B", "D"],
+        explanation: "Simulasi eksekusi harfiah, kartu langkah interaktif, dan refleksi hubungan urutan dengan hasil membantu murid memahami sifat sekuensial algoritma."
+      },
+      {
+        id: 5,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.2 • Sistem Komputer (RAM vs Penyimpanan)",
+        title: "Miskonsepsi Memori Utama (RAM) dan Penyimpanan Sekunder (SSD/HDD)",
+        caseText:
+          "Seorang murid bertanya: 'Pak, laptop saya punya SSD 512 GB dan RAM 8 GB, kenapa saat membuka puluhan tab browser dan aplikasi berat tetap terasa lambat, padahal penyimpanan masih sisa 300 GB?'",
+        prompt: "Tentukan apakah setiap pernyataan respons PCK berikut Benar atau Salah.",
+        statements: [
+          { id: "5.1", text: "Menjelaskan bahwa penyimpanan menyimpan data/program jangka panjang sedangkan RAM menampung data aktif yang sedang diproses CPU membantu meluruskan miskonsepsi.", correct: "Benar" },
+          { id: "5.2", text: "Menggunakan analogi meja kerja (RAM) vs lemari arsip (SSD/HDD) mempermudah murid memahami perbedaan fungsi keduanya.", correct: "Benar" },
+          { id: "5.3", text: "Menjawab bahwa RAM dan penyimpanan adalah istilah berbeda untuk komponen fisik yang sama persis.", correct: "Salah" },
+          { id: "5.4", text: "Mengaitkan keterbatasan RAM dengan gejala swapping/paging saat beban kerja tinggi memperkaya pemahaman sistem komputer.", correct: "Benar" }
+        ],
+        explanation: "Analogi meja kerja vs lemari arsip serta penjelasan peran RAM bagi data aktif vs penyimpanan permanen mengatasi miskonsepsi kapasitas vs memori kerja."
+      },
+      {
+        id: 6,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.5 • Sistem Komputer (Diagnosis Masalah Sederhana)",
+        title: "Mendiagnosis Gejala Perangkat Input-Output di Laboratorium",
+        caseText:
+          "Saat praktik mengetik dan mengolah dokumen, tetikus (mouse) nirkabel milik salah satu murid tidak merespons kursor di layar, sementara papan ketik (keyboard) kabel tetap berfungsi normal.",
+        prompt: "Sebagai guru Informatika, langkah diagnosis terbimbing manakah yang paling tepat dilatihkan kepada murid?",
+        options: [
+          { key: "A", text: "Langsung menyatakan motherboard komputer rusak dan memindahkan murid tanpa memeriksa." },
+          { key: "B", text: "Membimbing murid memeriksa daya baterai mouse, koneksi receiver USB/Bluetooth, serta mencoba receiver pada port USB lain yang berfungsi." },
+          { key: "C", text: "Menginstal ulang seluruh sistem operasi komputer seketika itu juga." },
+          { key: "D", text: "Meminta murid mengetuk-ngetuk mouse ke meja agar sensornya aktif." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Diagnosis masalah perangkat keras/I/O yang sistematis dimulai dari pemeriksaan elemen paling sederhana dan terisolasi (baterai, koneksi, port) sebelum menyimpulkan kerusakan besar."
+      },
+      {
+        id: 7,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.4 • Jaringan & Internet (LAN, Router, DNS)",
+        title: "Mengajarkan Alur Akses Situs Web Secara Konseptual",
+        caseText:
+          "Murid kelas VIII mengira ketika mengetik nama domain situs edukasi di browser, komputer langsung mengenali lokasi server secara ajaib tanpa peran penerjemahan alamat.",
+        prompt: "Strategi pembelajaran manakah yang paling tepat untuk menjelaskan konsep jaringan dan DNS secara bertahap? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menganalogikan DNS seperti buku kontak telepon yang mencocokkan nama orang (domain) dengan nomor teleponnya (alamat IP)." },
+          { key: "B", text: "Memvisualisasikan alur permintaan dari perangkat -> jaringan lokal/router -> ISP/DNS -> server -> balasan halaman web." },
+          { key: "C", text: "Meminta murid menghafal ratusan alamat IP numerik tanpa memahami fungsinya." },
+          { key: "D", text: "Mengadakan permainan peran (role-play) pengiriman pesan beramplop berlabel alamat tujuan." }
+        ],
+        correctKeys: ["A", "B", "D"],
+        explanation: "Analogi buku kontak, diagram alur paket/permintaan, dan role-play pengiriman pesan membantu murid memahami bagaimana nama domain dipetakan ke alamat tujuan."
+      },
+      {
+        id: 8,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.5 • Jaringan & Internet (Sarana Terbatas)",
+        title: "Pembelajaran Jaringan Saat Koneksi Internet Sekolah Terputus",
+        caseText:
+          "Hari ini jadwal praktik Jaringan Komputer, namun koneksi internet sekolah sedang gangguan total. Jaringan lokal (LAN) di laboratorium komputer tetap aktif dan terhubung ke server lokal kelas.",
+        prompt: "Tentukan apakah setiap pernyataan tindakan guru berikut Benar atau Salah.",
+        statements: [
+          { id: "8.1", text: "Guru dapat memanfaatkan jaringan lokal (LAN) yang aktif untuk mendemonstrasikan berbagi berkas/sumber daya lokal dan membedakannya dengan akses internet.", correct: "Benar" },
+          { id: "8.2", text: "Guru wajib memulangkan murid lebih awal karena tidak ada koneksi internet publik.", correct: "Salah" },
+          { id: "8.3", text: "Simulasi topologi (star, bus, ring/mesh) menggunakan diagram atau simulasi jaringan luring tetap dapat melatih analisis kebutuhan jaringan.", correct: "Benar" },
+          { id: "8.4", text: "Gangguan koneksi internet dapat dijadikan studi kasus autentik untuk melatih pemecahan masalah konektivitas.", correct: "Benar" }
+        ],
+        explanation: "Keterbatasan koneksi internet tidak menghentikan pembelajaran jaringan; jaringan LAN lokal, simulasi luring, dan analisis gangguan justru menjadi sumber belajar kontekstual."
+      },
+      {
+        id: 9,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.6 • Analisis Data (Pembersihan & Validitas Data)",
+        title: "Menangani Data Mentah Survei Kelas yang Tidak Konsisten",
+        caseText:
+          "Saat mengolah data hasil survei kebiasaan membaca digital di spreadsheet, murid menemukan entri usia tertulis '13 tahun', '13', dan 'dua belas setengah', serta satu baris kosong pada kolom durasi.",
+        prompt: "Langkah PCK manakah yang paling tepat ditekankan guru sebelum murid membuat grafik atau rata-rata?",
+        options: [
+          { key: "A", text: "Mengabaikan perbedaan format dan langsung menghitung rata-rata agar cepat selesai." },
+          { key: "B", text: "Membimbing murid melakukan pembersihan data (data cleaning) dan standarisasi format nilai secara transparan serta mencatat perlakuannya." },
+          { key: "C", text: "Menghapus seluruh baris survei tanpa memeriksa penyebab ketidakkonsistenan." },
+          { key: "D", text: "Mengubah angka survei secara acak agar hasilnya terlihat rapi." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Dalam analisis data, pembersihan dan standarisasi data sebelum komputasi/visualisasi sangat krusial agar kesimpulan tidak bias."
+      },
+      {
+        id: 10,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.1 • Analisis Data (Interpretasi & Kesimpulan Berbasis Bukti)",
+        title: "Mencegah Kesimpulan Terburu-buru dari Grafik Penjualan/Kunjungan",
+        caseText:
+          "Sebuah kelompok menyimpulkan bahwa 'buku fiksi jauh lebih diminati daripada buku sains di perpustakaan sepanjang tahun' hanya berdasarkan grafik peminjaman selama 3 hari saat pameran komik.",
+        prompt: "Pertanyaan bimbingan guru manakah yang melatih berpikir kritis berbasis bukti pada analisis data? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Apakah rentang waktu dan konteks pengambilan data (3 hari saat pameran komik) sudah mewakili keseluruhan klaim 'sepanjang tahun'?" },
+          { key: "B", text: "Data pembanding apa lagi yang diperlukan (misalnya data bulanan atau jumlah stok tiap kategori) untuk menguji kesimpulan tersebut?" },
+          { key: "C", text: "Bagaimana cara merevisi kesimpulan agar sesuai dengan bukti data yang benar-benar tersedia?" },
+          { key: "D", text: "Bagaimana cara mengganti warna latar belakang grafik menjadi lebih mencolok?" }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Literasi data menuntut kesesuaian antara cakupan data, metode visualisasi, dan klaim kesimpulan serta kesadaran terhadap keterbatasan data."
+      },
+      {
+        id: 11,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.6 • Algoritma & Pemrograman (Percabangan)",
+        title: "Membimbing Logika Percabangan Syarat Kelulusan Remedial",
+        caseText:
+          "Murid diminta menyusun logika: jika nilai >= 75 maka 'Lulus', jika nilai >= 60 dan < 75 maka 'Remedial Terbimbing', selain itu 'Remedial Ulang'. Beberapa murid tertukar menggunakan operator logika DAN (AND) dan ATAU (OR).",
+        prompt: "Tentukan apakah setiap pernyataan bimbingan PCK berikut Benar atau Salah.",
+        statements: [
+          { id: "11.1", text: "Menguji kasus nilai 80, 68, dan 55 membantu murid melihat jalur percabangan mana yang aktif pada tiap kondisi.", correct: "Benar" },
+          { id: "11.2", text: "Tabel kebenaran sederhana dapat dipakai untuk menjelaskan perbedaan syarat gabungan dengan logika DAN vs ATAU.", correct: "Benar" },
+          { id: "11.3", text: "Operator logika tidak berpengaruh pada hasil evaluasi kondisi percabangan.", correct: "Salah" },
+          { id: "11.4", text: "Meminta murid menjelaskan alasan pemilihan kondisi sebelum menulis kode memperkuat pemahaman konseptual.", correct: "Benar" }
+        ],
+        explanation: "Pengujian kasus uji (test cases), tabel kebenaran, dan penjelasan alasan logika membantu murid menguasai struktur kontrol kondisional."
+      },
+      {
+        id: 12,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.2 • Algoritma & Pemrograman (Perulangan / Loop)",
+        title: "Mengatasi Infinite Loop pada Pemrograman Blok/Teks",
+        caseText:
+          "Saat membuat animasi karakter bergerak bolak-balik menggunakan blok perulangan, karakter milik murid terus melesat keluar layar tanpa berhenti karena kondisi batas atau perubahan arah tidak diperbarui di dalam loop.",
+        prompt: "Strategi debugging manakah yang paling tepat dilatihkan guru kepada murid?",
+        options: [
+          { key: "A", text: "Menghapus seluruh proyek dan memulai dari awal tanpa menelusuri bagian yang bermasalah." },
+          { key: "B", text: "Membimbing murid melacak nilai variabel/posisi pada tiap iterasi (tracing) dan memeriksa blok yang berada di dalam badan perulangan." },
+          { key: "C", text: "Menambah jumlah perulangan menjadi 10.000 kali agar masalah hilang." },
+          { key: "D", text: "Meminta teman sekelompok mengerjakan bagian tersebut hingga selesai." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Debugging efektif dilakukan dengan menelusuri perubahan status/variabel per iterasi (tracing) dan mengevaluasi blok di dalam perulangan."
+      },
+      {
+        id: 13,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.4 • TIK & Produktivitas (Kolaborasi Daring & Versi Dokumen)",
+        title: "Mengelola Kolaborasi Dokumen Kelompok Agar Tidak Saling Menimpa",
+        caseText:
+          "Dalam tugas laporan kelompok, empat murid mengedit salinan berkas terpisah dengan nama 'Laporan_final.docx', 'Laporan_final2.docx', dan 'Laporan_revisi_baru.docx', sehingga perubahan penting hilang saat digabungkan.",
+        prompt: "Praktik TIK produktif manakah yang paling tepat diajarkan guru untuk mengatasi masalah tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menggunakan ruang kerja kolaboratif daring dengan riwayat versi (version history) dan komentar terstruktur." },
+          { key: "B", text: "Menerapkan konvensi penamaan berkas yang jelas, konsisten, dan memuat tanggal/versi bila bekerja luring." },
+          { key: "C", text: "Menyepakati pembagian bagian dan aturan penyatuan suntingan sebelum mulai bekerja bersama." },
+          { key: "D", text: "Menyerahkan seluruh pengetikan dan penyatuan berkas kepada satu orang saja tanpa koordinasi." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Keterampilan TIK dan produktivitas mencakup pengelolaan berkas, penamaan sistematis, riwayat versi, dan alur kolaborasi yang terkoordinasi."
+      },
+      {
+        id: 14,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.3 • Literasi Digital & Keamanan (Phishing & Kata Sandi)",
+        title: "Melatih Kewaspadaan Terhadap Tautan Phishing Berkaitan Akun Belajar",
+        caseText:
+          "Murid menerima pesan singkat yang mengatasnamakan layanan bantuan akun sekolah dan meminta pengisian ulang kata sandi serta kode verifikasi melalui tautan dengan domain yang menyerupai domain resmi.",
+        prompt: "Tentukan apakah setiap pernyataan pembelajaran keamanan digital berikut Benar atau Salah.",
+        statements: [
+          { id: "14.1", text: "Melatih murid memeriksa alamat URL/domain pengirim secara teliti dan tidak membagikan kode OTP/kata sandi adalah praktik keamanan esensial.", correct: "Benar" },
+          { id: "14.2", text: "Menggunakan kata sandi yang sama untuk seluruh akun media sosial, email, dan akun belajar adalah cara paling aman agar mudah diingat.", correct: "Salah" },
+          { id: "14.3", text: "Simulasi analisis contoh pesan phishing yang aman (tanpa mengklik tautan berbahaya) membantu murid mengenali pola rekayasa sosial.", correct: "Benar" },
+          { id: "14.4", text: "Mengaktifkan autentikasi dua faktor (2FA) menambah lapisan perlindungan akun selain kata sandi yang kuat.", correct: "Benar" }
+        ],
+        explanation: "Keamanan akun menggabungkan kata sandi kuat dan unik, 2FA, verifikasi domain/sumber, serta tidak membagikan kredensial/kode rahasia."
+      },
+      {
+        id: 15,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.1 • Dampak Sosial Informatika (Hoaks vs Misinformasi)",
+        title: "Membedakan Misinformasi dan Disinformasi dalam Studi Kasus Kelas",
+        caseText:
+          "Dalam diskusi Dampak Sosial Informatika, murid menemukan dua kasus penyebaran informasi keliru: Kasus A dilakukan seseorang yang ikut membagikan karena tidak sengaja percaya; Kasus B dibuat dan disebarkan secara sengaja untuk menipu publik.",
+        prompt: "Bimbingan konseptual manakah yang paling tepat diberikan guru untuk memperdalam analisis murid?",
+        options: [
+          { key: "A", text: "Menyatakan bahwa seluruh informasi salah di internet disebut hoaks dan tidak perlu dibedakan motif penyebarannya." },
+          { key: "B", text: "Membimbing murid menganalisis unsur kesengajaan dan tujuan menyesatkan untuk membedakan misinformasi (keliru tanpa niat menipu) dan disinformasi (keliru yang sengaja dibuat/disebarkan untuk menyesatkan)." },
+          { key: "C", text: "Meminta murid menghafal istilah asing tanpa mengaitkannya dengan contoh kasus." },
+          { key: "D", text: "Menutup diskusi karena topik dampak sosial tidak memerlukan analisis bukti." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Membedakan misinformasi dan disinformasi melatih ketepatan konseptual sekaligus kepekaan kritis terhadap motif dan dampak informasi digital."
+      },
+      {
+        id: 16,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.4 • Kecerdasan Artifisial (Data Latih & Bias AI)",
+        title: "Mengenalkan Bias Data pada Model Klasifikasi Sederhana",
+        caseText:
+          "Saat mencoba alat klasifikasi gambar sederhana di kelas, model sering salah mengklasifikasikan objek atau wajah tertentu karena 90% contoh data latih yang dimasukkan berasal dari satu latar pencahayaan dan satu sudut pandang saja.",
+        prompt: "Kesimpulan PCK manakah yang paling tepat dibangun bersama murid dari eksperimen tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Kualitas dan keberagaman data latih sangat memengaruhi keakuratan dan potensi bias keluaran model AI." },
+          { key: "B", text: "Model AI tidak memiliki kesadaran seperti manusia, melainkan mengenali pola statistik dari data yang dilatihkan kepadanya." },
+          { key: "C", text: "Menambah variasi data latih yang representatif dapat membantu mengurangi bias pada kasus uji." },
+          { key: "D", text: "Hasil keluaran AI selalu netral dan bebas bias secara otomatis tanpa perlu diverifikasi." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Eksperimen data latih sederhana membantu murid memahami bahwa bias AI berakar pada data/pola pelatihan dan memerlukan evaluasi kritis."
+      },
+      {
+        id: 17,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.6 • Proses Rekayasa & Karya Digital (Pengujian & Iterasi)",
+        title: "Tahap Pengujian (Testing) Sebelum Rilis Karya Digital Kelas",
+        caseText:
+          "Kelompok murid membuat kuis interaktif/aplikasi mini tentang daur ulang sampah. Setelah selesai merancang tampilan, mereka langsung menganggap proyek tuntas tanpa mengujinya kepada pengguna lain.",
+        prompt: "Tentukan apakah setiap pernyataan bimbingan rekayasa karya digital berikut Benar atau Salah.",
+        statements: [
+          { id: "17.1", text: "Menguji karya kepada pengguna sasaran membantu menemukan bug, navigasi membingungkan, atau instruksi yang kurang jelas.", correct: "Benar" },
+          { id: "17.2", text: "Iterasi perbaikan berdasarkan masukan pengujian merupakan bagian wajar dari proses rekayasa perangkat lunak/karya digital.", correct: "Benar" },
+          { id: "17.3", text: "Proses rekayasa karya digital berhenti pada tahap pembuatan desain visual awal tanpa perlu pengujian.", correct: "Salah" },
+          { id: "17.4", text: "Mendokumentasikan temuan uji coba dan perbaikan yang dilakukan melatih pertanggungjawaban proses berkarya.", correct: "Benar" }
+        ],
+        explanation: "Proses rekayasa karya digital mencakup identifikasi kebutuhan, perancangan, implementasi, pengujian, perbaikan iteratif, dan dokumentasi."
+      },
+      {
+        id: 18,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.6 • Asesmen Informatika (Rubrik Proses vs Tampilan)",
+        title: "Menilai Proyek Presentasi & Simulasi Kode Secara Adil",
+        caseText:
+          "Dua kelompok membuat simulasi simulasi antrean loket. Kelompok A memakai animasi sangat meriah tetapi logika antreannya (FIFO) keliru; Kelompok B tampilannya sederhana namun logika antrean tepat dan terdokumentasi baik.",
+        prompt: "Sebagai guru Informatika, prinsip penilaian manakah yang paling tepat diterapkan?",
+        options: [
+          { key: "A", text: "Memberi nilai tertinggi kepada Kelompok A karena animasinya paling menarik perhatian." },
+          { key: "B", text: "Menggunakan rubrik berbasis kriteria tujuan pembelajaran yang menilai ketepatan logika/algoritma, pengujian, dan dokumentasi secara proporsional." },
+          { key: "C", text: "Mengabaikan ketepatan logika karena yang penting proyek sudah dikumpulkan." },
+          { key: "D", text: "Memberi nilai sama rata kepada semua kelompok tanpa melihat rubrik." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Asesmen Informatika harus mengukur ketercapaian kompetensi esensial (logika, ketepatan proses, pemecahan masalah) melalui rubrik yang jelas, bukan sekadar hiasan visual."
+      },
+      {
+        id: 19,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.2 • PCK Miskonsepsi (Algoritma = Hanya Kode Teks)",
+        title: "Membongkar Miskonsepsi 'Algoritma Harus Selalu Berupa Kode Program'",
+        caseText:
+          "Beberapa murid beranggapan bahwa mereka tidak bisa belajar algoritma karena belum menguasai bahasa pemrograman berbasis teks.",
+        prompt: "Tindakan PCK manakah yang paling tepat untuk meluruskan anggapan tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menunjukkan bahwa resep masakan, petunjuk perakitan, diagram alir, dan pseudocode juga merupakan representasi algoritma." },
+          { key: "B", text: "Membedakan konsep algoritma (langkah logis menyelesaikan masalah) dari implementasinya dalam bahasa pemrograman tertentu." },
+          { key: "C", text: "Memulai latihan penyusunan algoritma dari bahasa natural dan diagram alir sebelum beralih ke pemrograman blok/teks." },
+          { key: "D", text: "Membenarkan anggapan murid bahwa tanpa sintaks bahasa teks tidak ada algoritma." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Algoritma adalah urutan langkah terstruktur untuk menyelesaikan masalah yang dapat direpresentasikan secara bertahap sebelum diwujudkan menjadi kode."
+      },
+      {
+        id: 20,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.5 • Plan–Do–See (Debugging pada Praktik Pemrograman)",
+        title: "Siklus Perbaikan Saat Sebagian Besar Murid Gagal di Tahap Debugging",
+        caseText:
+          "Pada tahap Do, 70% murid mengalami error logika saat menyusun kondisi majemuk pada latihan pemrograman. Pada tahap See, guru mencatat bahwa contoh awal terlalu melompat ke kasus gabungan yang kompleks.",
+        prompt: "Tentukan apakah setiap pernyataan refleksi & tindak lanjut berikut Benar atau Salah.",
+        statements: [
+          { id: "20.1", text: "Temuan pada tahap Do menjadi bukti untuk menyederhanakan langkah scaffolding kondisi tunggal sebelum kondisi majemuk pada pertemuan berikutnya.", correct: "Benar" },
+          { id: "20.2", text: "Guru perlu melakukan refleksi penyebab kesulitan alih-alih menganggap seluruh kelas tidak berbakat pemrograman.", correct: "Benar" },
+          { id: "20.3", text: "Mengajak murid berdiskusi menemukan letak kesalahan bersama di papan tulis/proyektor melatih strategi debugging kolektif.", correct: "Benar" },
+          { id: "20.4", text: "Kesalahan logika murid saat berlatih harus dihindari agar kelas terlihat sempurna saat diobservasi.", correct: "Salah" }
+        ],
+        explanation: "Kesalahan saat latihan adalah bahan diagnostik berharga dalam siklus pembelajaran untuk memperbaiki tahapan scaffolding dan melatih keterampilan debugging."
+      },
+      {
+        id: 21,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.1 • Analisis Data (Pemilihan Jenis Grafik)",
+        title: "Memilih Visualisasi yang Tepat untuk Komposisi vs Tren",
+        caseText:
+          "Murid ingin menyajikan persentase pangsa 4 jenis sampah organik/anorganik yang terkumpul dalam satu kali kegiatan bersih-bersih sekolah.",
+        prompt: "Visualisasi data manakah yang paling sesuai dan mudah dipahami untuk tujuan tersebut?",
+        options: [
+          { key: "A", text: "Diagram lingkaran (pie chart) atau diagram batang horizontal/vertikal berlabel persentase/jumlah yang jelas." },
+          { key: "B", text: "Diagram garis deret waktu (time series) seolah-olah menunjukkan perubahan harian selama 10 tahun." },
+          { key: "C", text: "Peta sebaran curah hujan provinsi." },
+          { key: "D", text: "Diagram alir proses pengolahan limbah." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Perbandingan bagian dari keseluruhan (proporsi/komposisi kategori) tepat divisualisasikan dengan diagram batang kategori atau diagram lingkaran dengan label yang jelas."
+      },
+      {
+        id: 22,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.4 • Literasi Digital (Hak Cipta & Lisensi Kreatif)",
+        title: "Mengajarkan Penggunaan Aset Gambar & Musik Secara Legal di Karya Digital",
+        caseText:
+          "Murid membuat video kampanye literasi digital dan mengunduh lagu berhak cipta penuh serta logo merek komersial tanpa izin untuk dipublikasikan terbuka.",
+        prompt: "Langkah pembelajaran PCK manakah yang tepat untuk membekali murid tentang hak cipta dan lisensi? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Mengenalkan perbedaan karya berhak cipta restriktif dan aset berlisensi terbuka (seperti Creative Commons) beserta kewajiban atribusinya." },
+          { key: "B", text: "Mengarahkan murid menggunakan bank aset bebas lisensi/edukatif atau membuat karya orisinal sendiri." },
+          { key: "C", text: "Membiasakan penulisan kredit/atribusi sumber pada bagian penutup karya digital." },
+          { key: "D", text: "Menyatakan bahwa seluruh konten di internet bebas dipakai tanpa syarat selama untuk tugas sekolah." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Pemahaman lisensi, atribusi, dan pemanfaatan sumber berlisensi tepat melatih murid menghasilkan karya digital yang etis dan bertanggung jawab."
+      },
+      {
+        id: 23,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.3 • Kecerdasan Artifisial (Verifikasi & Privasi)",
+        title: "Penggunaan Asisten AI dalam Riset Topik Informatika di Kelas",
+        caseText:
+          "Saat mempelajari dampak AI, beberapa murid mengetikkan nama lengkap, nomor telepon, dan alamat rumah mereka ke chatbot publik untuk meminta rekomendasi kegiatan ekstrakurikuler.",
+        prompt: "Tentukan apakah setiap pernyataan bimbingan literasi AI berikut Benar atau Salah.",
+        statements: [
+          { id: "23.1", text: "Guru perlu mengingatkan agar murid tidak memasukkan data pribadi sensitif (seperti alamat, kontak, atau kredensial) ke layanan AI publik.", correct: "Benar" },
+          { id: "23.2", text: "Keluaran AI perlu diverifikasi kebenarannya sebelum dijadikan rujukan karena AI dapat menghasilkan informasi keliru atau tidak akurat.", correct: "Benar" },
+          { id: "23.3", text: "Menyerahkan seluruh pengambilan keputusan kritis dan penilaian tugas kepada AI tanpa verifikasi manusia adalah praktik terbaik.", correct: "Salah" },
+          { id: "23.4", text: "Merancang prompt yang jelas dan spesifik membantu memperoleh respons yang lebih relevan untuk dianalisis.", correct: "Benar" }
+        ],
+        explanation: "Literasi AI mencakup perlindungan privasi data pribadi, verifikasi kritis terhadap keluaran model, serta akuntabilitas manusia."
+      },
+      {
+        id: 24,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.2 • Sistem Komputer (Siklus Input–Proses–Output–Storage)",
+        title: "Menjelaskan Alur Kerja Komputer Lewat Kasus Mesin Kasir / Pemindai",
+        caseText:
+          "Murid kebingungan membedakan perangkat input, proses, output, dan penyimpanan saat melihat sistem kasir swalayan memindai kode batang (barcode) barang, menghitung total harga, mencetak struk, dan memperbarui stok.",
+        prompt: "Penjelasan PCK manakah yang paling runtut dan memudahkan pemahaman murid?",
+        options: [
+          { key: "A", text: "Menyebutkan istilah teknis bahasa mesin tanpa mengaitkannya dengan aktivitas pemindaian, perhitungan, pencetakan, dan penyimpanan stok." },
+          { key: "B", text: "Memetakan alur: pemindai barcode sebagai input, prosesor mengolah data & harga, basis data/penyimpanan memperbarui stok, dan layar/struk sebagai output." },
+          { key: "C", text: "Menyatakan bahwa semua perangkat kasir hanya berfungsi sebagai output." },
+          { key: "D", text: "Meminta murid menghafal tahun penemuan komputer pertama." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Pemetaan langsung ke skenario nyata (input data kode -> pemrosesan & pembaruan penyimpanan -> output informasi) membuat alur kerja sistem komputer mudah dipahami."
+      },
+      {
+        id: 25,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.6 • Algoritma & Pemrograman (Penelusuran Variabel)",
+        title: "Melatih Penelusuran Nilai Variabel (Trace Table) Sebelum Menjalankan Kode",
+        caseText:
+          "Murid sering menebak hasil program secara asal tanpa melacak perubahan nilai variabel dari baris ke baris pada struktur perulangan sederhana.",
+        prompt: "Strategi PCK manakah yang paling tepat untuk melatih penelusuran keluaran program secara sistematis? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menggunakan tabel penelusuran (trace table) yang mencatat nilai variabel di setiap langkah eksekusi." },
+          { key: "B", text: "Meminta murid menuliskan prediksi keluaran terlebih dahulu sebelum menekan tombol jalankan (run)." },
+          { key: "C", text: "Membahas perbedaan antara prediksi murid dan keluaran aktual saat terjadi ketidaksesuaian." },
+          { key: "D", text: "Melarang murid menuliskan nilai variabel sementara di kertas coretan." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Trace table, prediksi sebelum eksekusi, dan analisis selisih prediksi vs hasil melatih ketelitian menelusuri alur eksekusi program."
+      },
+      {
+        id: 26,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.5 • Jaringan & Internet (Keamanan Dasar Jaringan)",
+        title: "Miskonsepsi 'Gembok / Kata Sandi Wi-Fi Menjamin Keamanan Total'",
+        caseText:
+          "Seorang murid berpendapat: 'Karena Wi-Fi rumah saya sudah memakai kata sandi, berarti semua aktivitas di internet pasti aman dari penipuan atau pencurian data.'",
+        prompt: "Tentukan apakah setiap pernyataan penjelasan guru berikut Benar atau Salah.",
+        statements: [
+          { id: "26.1", text: "Kata sandi jaringan lokal membantu membatasi akses ke jaringan/router, tetapi tidak otomatis melindungi dari situs palsu atau tautan phishing.", correct: "Benar" },
+          { id: "26.2", text: "Menggunakan kata sandi Wi-Fi default bawaan pabrik yang mudah ditebak berisiko bagi keamanan jaringan lokal.", correct: "Benar" },
+          { id: "26.3", text: "Keamanan digital merupakan tanggung jawab berlapis mulai dari perangkat, jaringan, akun, hingga perilaku pengguna.", correct: "Benar" },
+          { id: "26.4", text: "Jika jaringan Wi-Fi sudah dikunci, pengguna tidak perlu lagi memeriksa keaslian tautan atau lampiran mencurigakan.", correct: "Salah" }
+        ],
+        explanation: "Keamanan siber bersifat berlapis (defense in depth); keamanan akses Wi-Fi tidak menggantikan kehati-hatian terhadap phishing, malware, atau kebocoran akun."
+      },
+      {
+        id: 27,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.1 • Analisis Data (Filter & Sortir pada Spreadsheet)",
+        title: "Menggunakan Fitur Sortir & Filter untuk Menjawab Pertanyaan Spesifik",
+        caseText:
+          "Murid memiliki tabel berisi 120 baris data kegiatan literasi sekolah dengan kolom Tanggal, Kelas, Jenis_Kegiatan, dan Jumlah_Peserta. Mereka ingin mengetahui 5 kegiatan dengan jumlah peserta terbanyak khusus di kelas VIII.",
+        prompt: "Alur analisis data manakah yang paling tepat diarahkan oleh guru?",
+        options: [
+          { key: "A", text: "Menghapus seluruh baris kelas VII dan IX secara permanen dari berkas master tanpa menyalinnya." },
+          { key: "B", text: "Menerapkan filter untuk menampilkan kelas VIII (atau menyaring data) lalu mengurutkan (sort) secara menurun (descending) berdasarkan Jumlah_Peserta." },
+          { key: "C", text: "Mengubah angka Jumlah_Peserta menjadi teks agar tidak bisa diurutkan." },
+          { key: "D", text: "Membuat grafik lingkaran 120 irisan tanpa menyaring data terlebih dahulu." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Penyaringan (filter) berdasarkan kriteria dan pengurutan (sort) berdasarkan nilai merupakan operasi dasar analisis data terstruktur yang efisien."
+      },
+      {
+        id: 28,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.3 • Dampak Sosial Informatika (Kesenjangan Digital & Etika)",
+        title: "Membahas Kesenjangan Akses Digital Secara Empatik dan Kritis",
+        caseText:
+          "Dalam diskusi dampak sosial teknologi, beberapa murid mengejek teman yang menggunakan gawai lama atau berbagi perangkat dengan saudara di rumah.",
+        prompt: "Tindakan PCK dan pengelolaan kelas manakah yang paling tepat dilakukan guru? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menghentikan ejekan secara tegas namun santun serta mengarahkan diskusi pada faktor ekonomi, infrastruktur, dan akses digital yang beragam di masyarakat." },
+          { key: "B", text: "Menegaskan bahwa nilai diri dan kemampuan berpikir komputasional seseorang tidak ditentukan oleh kemewahan gawai." },
+          { key: "C", text: "Merancang aktivitas belajar yang adil dan inklusif tanpa memaksa kepemilikan perangkat mahal di rumah." },
+          { key: "D", text: "Membiarkan ejekan berlangsung agar murid saling bersaing membeli gawai baru." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Membahas kesenjangan digital secara kritis dan empatik memperkuat pemahaman dampak sosial Informatika sekaligus menjaga keadilan dan martabat murid."
+      },
+      {
+        id: 29,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.6 • Proses Rekayasa & Karya Digital (Perencanaan Kebutuhan)",
+        title: "Merancang Prototipe Aplikasi Catatan Kas Kelas",
+        caseText:
+          "Sebelum membuat aplikasi pencatatan kas kelas sederhana, guru meminta kelompok murid menentukan fitur utama, jenis input (pemasukan/pengeluaran, tanggal, keterangan), serta tampilan layar sederhana.",
+        prompt: "Tentukan apakah setiap pernyataan tahap perancangan berikut Benar atau Salah.",
+        statements: [
+          { id: "29.1", text: "Menetapkan kebutuhan pengguna dan sketsa antarmuka (wireframe) sebelum implementasi membantu mencegah perubahan arah yang tidak terencana.", correct: "Benar" },
+          { id: "29.2", text: "Mengidentifikasi potensi kesalahan input (seperti nominal negatif yang tidak sesuai) sejak tahap perancangan melatih ketelitian rekayasa.", correct: "Benar" },
+          { id: "29.3", text: "Tahap perancangan tidak diperlukan jika murid sudah terbiasa membuka editor kode atau aplikasi desain.", correct: "Salah" },
+          { id: "29.4", text: "Membagi tugas berdasarkan alur kerja (perancangan data, tampilan, pengujian) mendukung kerja tim yang terarah.", correct: "Benar" }
+        ],
+        explanation: "Perancangan kebutuhan, struktur data, dan alur antarmuka merupakan fondasi penting dalam rekayasa karya digital yang terstruktur."
+      },
+      {
+        id: 30,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.2 • Berpikir Komputasional (Dekomposisi & Pola pada Kasus Sehari-hari)",
+        title: "Menerapkan Berpikir Komputasional pada Kasus Antrean Kantin",
+        caseText:
+          "Jam istirahat di sekolah sering terjadi antrean panjang dan lambat di kantin karena murid baru menentukan pesanan dan mencari uang pas saat sudah berada di depan kasir.",
+        prompt: "Pertanyaan pemantik manakah yang paling tepat mengajak murid menerapkan Berpikir Komputasional secara terpadu?",
+        options: [
+          { key: "A", text: "Siapa yang paling sering terlambat ke kantin?" },
+          { key: "B", text: "Bagaimana kita memecah alur antrean menjadi tahapan (dekomposisi), mengenali pola keterlambatan yang berulang (pengenalan pola), menyaring informasi penting alur layanan (abstraksi), lalu menyusun langkah perbaikan antrean (algoritma)?" },
+          { key: "C", text: "Berapa harga seluruh makanan di kantin jika dikalikan sepuluh?" },
+          { key: "D", text: "Mengapa kantin tidak ditutup saja saat jam istirahat?" }
+        ],
+        correctKeys: ["B"],
+        explanation: "Pertanyaan tersebut mengintegrasikan empat pilar Berpikir Komputasional secara logis dan kontekstual pada permasalahan nyata di sekolah."
+      },
+      {
+        id: 31,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.5 • Algoritma & Pemrograman (Fungsi / Modularitas)",
+        title: "Mengenalkan Konsep Fungsi (Subprogram) Lewat Tugas Berulang",
+        caseText:
+          "Murid menulis program yang berulang kali menyalin blok perhitungan luas/keliling atau pesan notifikasi yang sama di banyak tempat sehingga sulit diperbarui ketika aturan berubah.",
+        prompt: "Pendekatan PCK manakah yang paling tepat untuk memperkenalkan manfaat fungsi/prosedur? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Memperlihatkan bagaimana mengubah satu aturan di dalam fungsi memperbarui seluruh pemanggilannya tanpa mengedit satu per satu." },
+          { key: "B", text: "Mengaitkan fungsi dengan 'kotak alat/mesin khusus' yang menerima input tertentu dan menghasilkan output/aksi terstandar." },
+          { key: "C", text: "Meminta murid membandingkan keterbacaan kode sebelum dan sesudah dipecah menjadi fungsi." },
+          { key: "D", text: "Menyatakan bahwa fungsi hanya menyulitkan dan tidak pernah dipakai dalam pemrograman nyata." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Modularitas melalui fungsi meningkatkan keterbacaan, mengurangi duplikasi kode, dan memudahkan pemeliharaan/perbaikan program."
+      },
+      {
+        id: 32,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.4 • Analisis Data (Membaca Grafik Garis)",
+        title: "Menafsirkan Grafik Tren Penggunaan Internet Harian",
+        caseText:
+          "Grafik garis menunjukkan penggunaan internet harian murid meningkat tajam pada pukul 19.00–21.00 dan menurun drastis pada pukul 01.00–04.00.",
+        prompt: "Tentukan apakah setiap pernyataan analisis data berikut Benar atau Salah.",
+        statements: [
+          { id: "32.1", text: "Grafik garis tepat digunakan untuk membaca pola perubahan/tren dari waktu ke waktu.", correct: "Benar" },
+          { id: "32.2", text: "Peningkatan pada malam hari dapat menjadi titik awal hipotesis untuk ditelusuri lebih lanjut (misalnya waktu belajar/hiburan setelah sekolah), bukan klaim mutlak tanpa bukti.", correct: "Benar" },
+          { id: "32.3", text: "Grafik garis tidak boleh digunakan untuk data yang berkelanjutan menurut urutan waktu.", correct: "Salah" },
+          { id: "32.4", text: "Membaca sumbu horizontal dan vertikal beserta satuannya sangat penting agar tidak salah menafsirkan skala.", correct: "Benar" }
+        ],
+        explanation: "Membaca grafik secara akurat menuntut pemahaman sumbu/skala, identifikasi tren, dan pembedaan antara pola data dengan interpretasi/hipotesis lanjutan."
+      },
+      {
+        id: 33,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.6 • Literasi Digital & Keamanan (Verifikasi Berita)",
+        title: "Langkah Awal Memverifikasi Klaim Statistik Viral di Media Sosial",
+        caseText:
+          "Sebuah unggahan media sosial mengklaim '85% pelajar Indonesia mengalami kecanduan gawai berat' tanpa menyebutkan lembaga survei, tahun, sampel, maupun metode pengukuran.",
+        prompt: "Langkah verifikasi manakah yang paling tepat dilatihkan guru kepada murid?",
+        options: [
+          { key: "A", text: "Langsung membagikannya ke grup kelas agar teman-teman ikut waspada." },
+          { key: "B", text: "Menelusuri sumber primer/lembaga resmi pembuat data, memeriksa konteks metodologi/sampel, dan membandingkannya dengan sumber tepercaya lain." },
+          { key: "C", text: "Menilai kebenarannya hanya berdasarkan jumlah tanda suka (like) pada unggahan tersebut." },
+          { key: "D", text: "Menganggap angka persentase selalu benar selama ditulis dengan huruf tebal." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Klaim statistik memerlukan penelusuran sumber asal, kredibilitas penerbit, dan konteks data sebelum dipercaya atau disebarluaskan."
+      },
+      {
+        id: 34,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.2 • Sistem Komputer (Perangkat Lunak Aplikasi vs Sistem Operasi)",
+        title: "Membedakan Sistem Operasi, Aplikasi Produktivitas, dan Utilitas",
+        caseText:
+          "Murid sering mencampuradukkan peran sistem operasi, aplikasi pengolah kata, dan peramban web (browser).",
+        prompt: "Aktivitas PCK manakah yang paling tepat untuk membedakan peran perangkat lunak tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Membuat tabel klasifikasi fungsi berdasarkan contoh nyata di perangkat yang digunakan murid." },
+          { key: "B", text: "Menjelaskan bahwa sistem operasi mengelola sumber daya perangkat keras dan menjalankan program lain, sedangkan aplikasi melayani tugas spesifik pengguna." },
+          { key: "C", text: "Mengkaji kasus apa yang terjadi jika sebuah aplikasi error vs jika sistem operasi mengalami gangguan." },
+          { key: "D", text: "Menyatakan bahwa seluruh perangkat lunak memiliki fungsi yang identik dan tidak dapat dibedakan." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Klasifikasi fungsional dan analisis dampak gangguan pada tiap lapisan perangkat lunak memperkuat pemahaman arsitektur sistem komputer."
+      },
+      {
+        id: 35,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.5 • Plan–Do–See (Refleksi Pembelajaran Analisis Data)",
+        title: "Menindaklanjuti Kesenjangan Kemampuan Formula Dasar Spreadsheet",
+        caseText:
+          "Pada tahap Do, beberapa murid sudah mahir memakai fungsi SUM, AVERAGE, dan MAX, sementara sebagian lain masih menghitung penjumlahan manual dengan kalkulator lalu mengetik angkanya ke sel.",
+        prompt: "Tentukan apakah setiap pernyataan tindak lanjut guru berikut Benar atau Salah.",
+        statements: [
+          { id: "35.1", text: "Menunjukkan keuntungan formula dinamis (otomatis memperbarui hasil saat data berubah) membantu murid memahami alasan memakai rumus.", correct: "Benar" },
+          { id: "35.2", text: "Menyediakan kartu panduan sintaks formula bertingkat mendukung murid yang belum terbiasa tanpa menghambat murid yang sudah siap tantangan lanjutan.", correct: "Benar" },
+          { id: "35.3", text: "Mengetik hasil hitung manual ke sel merupakan praktik terbaik yang perlu dipertahankan untuk semua tugas analisis data.", correct: "Salah" },
+          { id: "35.4", text: "Pada tahap See, guru mencatat distribusi penguasaan formula sebagai dasar merancang tugas pengayaan dan pendampingan.", correct: "Benar" }
+        ],
+        explanation: "Penggunaan formula dinamis merupakan inti efisiensi spreadsheet; pendampingan bertingkat dan refleksi berbasis bukti membantu menyetarakan penguasaan."
+      },
+      {
+        id: 36,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.4 • Jaringan & Internet (Keamanan Jaringan Publik)",
+        title: "Menggunakan Wi-Fi Publik Gratis di Kafe atau Tempat Umum",
+        caseText:
+          "Murid berencana mengakses akun perbankan/pembayaran daring atau akun penting menggunakan jaringan Wi-Fi terbuka tanpa kata sandi di ruang publik.",
+        prompt: "Saran keamanan digital manakah yang paling tepat diberikan guru?",
+        options: [
+          { key: "A", text: "Menghindari transaksi/akses akun sensitif pada jaringan publik yang tidak terenkripsi/tidak tepercaya, atau menundanya hingga menggunakan jaringan aman." },
+          { key: "B", text: "Membagikan kata sandi akun utama kepada teman agar ikut memantau." },
+          { key: "C", text: "Menonaktifkan pembaruan keamanan perangkat agar koneksi lebih cepat." },
+          { key: "D", text: "Menganggap Wi-Fi publik terbuka selalu lebih aman daripada jaringan pribadi." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Jaringan publik terbuka memiliki risiko penyadapan/man-in-the-middle lebih tinggi, sehingga transaksi atau akses akun sensitif sebaiknya dihindari di jaringan tersebut."
+      },
+      {
+        id: 37,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.1 • Berpikir Komputasional (Pseudocode & Alur Kontrol)",
+        title: "Merancang Algoritma Penentu Diskon Bertingkat Secara Jelas",
+        caseText:
+          "Murid menulis pseudocode penentuan kategori potongan harga tetapi lupa menuliskan kondisi batas atau keluaran untuk kasus di luar aturan.",
+        prompt: "Kebiasaan menyusun algoritma manakah yang perlu dilatihkan guru? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Mendefinisikan input, proses, kondisi, dan output secara eksplisit sebelum menulis kode." },
+          { key: "B", text: "Memeriksa kelengkapan seluruh cabang kondisi (termasuk kasus batas dan kondisi default/ELSE)." },
+          { key: "C", text: "Menguji algoritma dengan berbagai skenario input yang mewakili tiap cabang." },
+          { key: "D", text: "Mengabaikan kasus batas karena dianggap tidak pernah muncul." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Algoritma yang baik harus jelas input-outputnya, lengkap percabangannya, dan teruji pada berbagai skenario termasuk nilai batas."
+      },
+      {
+        id: 38,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.6 • Kecerdasan Artifisial (Peluang & Keterbatasan AI)",
+        title: "Menilai Manfaat dan Batasan Alat Bantu Generatif dalam Belajar",
+        caseText:
+          "Dalam pembelajaran, guru memperkenalkan penggunaan AI sebagai alat bantu brainstorming ide dan penjelasan konsep, namun menekankan batasan akurasi dan orisinalitas karya murid.",
+        prompt: "Tentukan apakah setiap pernyataan sikap kritis terhadap AI berikut Benar atau Salah.",
+        statements: [
+          { id: "38.1", text: "AI dapat membantu memunculkan beragam ide awal atau menyederhanakan penjelasan, tetapi tetap memerlukan evaluasi kritis manusia.", correct: "Benar" },
+          { id: "38.2", text: "Karya yang sepenuhnya disalin dari keluaran AI tanpa pemahaman dan penyuntingan bertanggung jawab berisiko melanggar kejujuran akademik.", correct: "Benar" },
+          { id: "38.3", text: "Memahami batasan AI melatih murid menjadi pengguna teknologi yang sadar, etis, dan mandiri.", correct: "Benar" },
+          { id: "38.4", text: "AI tidak pernah salah dalam menyusun fakta sejarah, kutipan, maupun perhitungan logika.", correct: "Salah" }
+        ],
+        explanation: "AI memiliki keterbatasan faktual/logika dan potensi bias; penggunaan yang beretika menempatkan penalaran dan tanggung jawab murid sebagai pusat."
+      },
+      {
+        id: 39,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.2 • TIK & Produktivitas (Keselamatan Ergonomi Digital)",
+        title: "Mengatasi Keluhan Pegal Leher & Mata Lelah Saat Praktik Komputer",
+        caseText:
+          "Setelah 60 menit praktik di laboratorium komputer, beberapa murid mengeluhkan mata perih dan bahu tegang karena posisi monitor terlalu rendah dan pencahayaan layar terlalu silau.",
+        prompt: "Tindakan PCK dan pengelolaan lingkungan belajar manakah yang paling tepat dilakukan guru?",
+        options: [
+          { key: "A", text: "Mengabaikan keluhan karena praktik harus berlangsung terus tanpa jeda." },
+          { key: "B", text: "Membimbing penyesuaian ergonomi (posisi duduk/layar sejajar pandangan, jarak dan kecerahan layar wajar) serta menyelipkan jeda istirahat mata (seperti aturan 20-20-20) secara proporsional." },
+          { key: "C", text: "Mematikan seluruh lampu ruangan sehingga layar monitor tampak sangat menyilaukan dalam gelap." },
+          { key: "D", text: "Meminta murid menempelkan wajah sangat dekat ke layar." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Kesehatan dan keselamatan kerja (K3) / ergonomi digital merupakan bagian penting dalam pengelolaan praktik TIK dan pemanfaatan perangkat secara sehat."
+      },
+      {
+        id: 40,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.5 • Proses Rekayasa & Karya Digital (Evaluasi & Dokumentasi)",
+        title: "Menyusun Dokumentasi Proyek Karya Digital yang Mudah Dipahami",
+        caseText:
+          "Kelompok murid telah menyelesaikan prototipe permainan edukasi sederhana, namun tidak menyertakan panduan cara bermain, tujuan permainan, maupun catatan perubahan versi.",
+        prompt: "Unsur dokumentasi karya digital manakah yang paling tepat diarahkan oleh guru? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Deskripsi singkat tujuan karya dan siapa pengguna sasarannya." },
+          { key: "B", text: "Petunjuk penggunaan/aturan main yang jelas agar orang lain dapat menjalankan karya dengan mudah." },
+          { key: "C", text: "Catatan singkat kendala yang ditemukan dan perbaikan yang dilakukan selama pengembangan." },
+          { key: "D", text: "Menghapus seluruh catatan proses karena dianggap tidak penting." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Dokumentasi yang baik membantu pengguna memahami cara memakai karya serta memperlihatkan proses berpikir dan iterasi pembuatnya."
+      },
+      {
+        id: 41,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.1 • Berpikir Komputasional (Pemodelan & Simulasi)",
+        title: "Menggunakan Simulasi Sederhana Sebelum Membangun Solusi Akhir",
+        caseText:
+          "Guru mengajak murid memodelkan alur distribusi bantuan logistik ke beberapa posko menggunakan simulasi kartu dan papan grid sebelum menyusun rencana rute distribusi akhir.",
+        prompt: "Tentukan apakah setiap pernyataan pemodelan & simulasi berikut Benar atau Salah.",
+        statements: [
+          { id: "41.1", text: "Simulasi memungkinkan murid menguji asumsi dan skenario secara aman dan hemat biaya sebelum diterapkan pada situasi nyata.", correct: "Benar" },
+          { id: "41.2", text: "Model selalu menyederhanakan realitas dengan memfokuskan pada variabel utama yang relevan dengan tujuan analisis.", correct: "Benar" },
+          { id: "41.3", text: "Hasil simulasi tidak perlu dikaitkan kembali dengan kondisi nyata di lapangan.", correct: "Salah" },
+          { id: "41.4", text: "Membandingkan dua alternatif rute dalam simulasi melatih pengambilan keputusan berbasis pertimbangan efisiensi.", correct: "Benar" }
+        ],
+        explanation: "Pemodelan dan simulasi membantu menguji gagasan, membandingkan alternatif, dan memahami perilaku sistem sebelum implementasi."
+      },
+      {
+        id: 42,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.6 • Analisis Data (Menghindari Grafik Menyesatkan)",
+        title: "Mengenali Manipulasi Skala Sumbu Y pada Grafik Batang",
+        caseText:
+          "Sebuah grafik batang memotong sumbu vertikal (Y) sehingga dimulai dari angka 98 hingga 100, membuat selisih 0,5 poin terlihat seolah-olah melonjak berkali lipat.",
+        prompt: "Penjelasan literasi data manakah yang paling tepat diberikan guru kepada murid?",
+        options: [
+          { key: "A", text: "Menunjukkan bahwa pemotongan sumbu (truncated axis) dapat memperbesar kesan visual perbedaan kecil, sehingga pembaca harus selalu memeriksa skala sumbu dan nilai aktualnya." },
+          { key: "B", text: "Menyatakan bahwa grafik dengan skala terpotong selalu salah secara matematis dalam segala situasi." },
+          { key: "C", text: "Mengajarkan murid untuk selalu memotong sumbu agar terlihat dramatis tanpa keterangan." },
+          { key: "D", text: "Mengabaikan label sumbu Y saat membaca grafik." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Membaca grafik secara kritis mencakup pemeriksaan skala sumbu dan nilai sesungguhnya agar tidak terjebak ilusi visual."
+      },
+      {
+        id: 43,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.4 • Dampak Sosial Informatika (Jejarung & Privasi Data Pribadi)",
+        title: "Melindungi Data Pribadi Saat Mengisi Formulir Daring",
+        caseText:
+          "Murid diminta mengisi kuis/formulir daring pada sebuah situs tidak dikenal yang mewajibkan NIK, tanggal lahir, nama ibu kandung, dan foto KTP/kartu pelajar untuk membuka akses materi gratis.",
+        prompt: "Tindakan keamanan & privasi data manakah yang tepat diajarkan guru? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menilai kewajaran permintaan data pribadi dibandingkan tujuan layanan/formulir tersebut." },
+          { key: "B", text: "Menghindari membagikan data sensitif atau dokumen identitas pada formulir/situs yang tidak jelas kredibilitas dan kebijakan privasinya." },
+          { key: "C", text: "Mengonsultasikan tautan/formulir yang mencurigakan kepada guru atau pihak berwenang di sekolah." },
+          { key: "D", text: "Mengunggah foto identitas lengkap ke ruang publik agar mudah diakses siapa saja." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Prinsip minimasi data dan kewaspadaan terhadap permintaan data sensitif melindungi murid dari penyalahgunaan identitas dan kebocoran privasi."
+      },
+      {
+        id: 44,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.3 • Algoritma & Pemrograman (Input–Proses–Output)",
+        title: "Membedakan Perintah Input, Proses, dan Output pada Program Sederhana",
+        caseText:
+          "Saat mempelajari program penghitung luas persegi panjang, beberapa murid tidak membedakan antara menerima masukan panjang & lebar dari pengguna, menghitung luas, dan menampilkan hasil ke layar.",
+        prompt: "Tentukan apakah setiap pernyataan bimbingan PCK berikut Benar atau Salah.",
+        statements: [
+          { id: "44.1", text: "Menguraikan alur program menjadi Input (panjang, lebar), Proses (luas = panjang * lebar), dan Output (tampilkan luas) memperjelas struktur logika dasar.", correct: "Benar" },
+          { id: "44.2", text: "Mengharuskan murid menebak hasil tanpa mengetahui nilai input adalah latihan yang baik untuk memahami alur IPO.", correct: "Salah" },
+          { id: "44.3", text: "Menguji program dengan pasangan nilai input yang berbeda membantu murid melihat konsistensi rumus pada bagian proses.", correct: "Benar" },
+          { id: "44.4", text: "Output program sebaiknya memberi label yang jelas (misalnya 'Luas = ...') agar mudah dipahami pengguna.", correct: "Benar" }
+        ],
+        explanation: "Struktur Input–Proses–Output (IPO) adalah kerangka dasar memahami alur kerja program dan merancang antarmuka keluaran yang informatif."
+      },
+      {
+        id: 45,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.5 • Sistem Komputer (Penyimpanan & Satuan Data)",
+        title: "Mengurutkan Satuan Ukuran Data Secara Konseptual",
+        caseText:
+          "Dalam latihan representasi data, beberapa murid mengira ukuran berkas dalam Kilobyte (KB) lebih besar daripada Gigabyte (GB) karena angkanya terlihat lebih besar saat diukur dalam byte.",
+        prompt: "Strategi PCK manakah yang paling tepat untuk meluruskan pemahaman satuan ukuran data?",
+        options: [
+          { key: "A", text: "Menggunakan analogi satuan panjang atau massa bertingkat serta membandingkan ukuran berkas nyata (misalnya dokumen teks kecil vs foto/video beresolusi tinggi)." },
+          { key: "B", text: "Meminta murid menghafal urutan satuan tanpa contoh perbandingan ukuran berkas sama sekali." },
+          { key: "C", text: "Menyatakan bahwa byte lebih besar daripada terabyte." },
+          { key: "D", text: "Mengabaikan kekeliruan karena satuan ukuran data tidak memengaruhi penyimpanan." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Membandingkan ukuran berkas nyata dan menggunakan analogi satuan bertingkat membantu murid memahami hirarki besaran data secara intuitif."
+      },
+      {
+        id: 46,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.6 • Plan–Do–See (Refleksi Hasil Asesmen Praktik)",
+        title: "Merancang Remedial & Pengayaan Spesifik Setelah Praktik Algoritma",
+        caseText:
+          "Dari hasil asesmen formatif praktik algoritma, 6 murid masih keliru menyusun urutan langkah percabangan, 18 murid sudah tepat pada kasus dasar, dan 6 murid sudah mampu merancang variasi kasus tambahan secara mandiri.",
+        prompt: "Tindak lanjut diferensiasi berbasis bukti manakah yang paling tepat? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Memberikan pendampingan terfokus dan latihan langkah bertingkat kepada 6 murid yang masih kesulitan pada urutan dan kondisi dasar." },
+          { key: "B", text: "Memberikan tantangan pengayaan berbasis kasus lanjutan/optimasi algoritma kepada 6 murid yang sudah menguasai materi inti." },
+          { key: "C", text: "Melakukan tindak lanjut secara bermartabat tanpa memberi label merendahkan kepada kelompok mana pun." },
+          { key: "D", text: "Memberikan soal yang sama persis tanpa penyesuaian dukungan maupun pengayaan." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Tindak lanjut asesmen yang efektif menyesuaikan dukungan bagi yang membutuhkan dan tantangan bagi yang siap, tanpa stigma atau label negatif."
+      },
+      {
+        id: 47,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.2 • Jaringan & Internet (Perangkat Jaringan Dasar)",
+        title: "Memahami Peran Access Point, Switch/Hub, dan Router",
+        caseText:
+          "Murid sering menganggap seluruh kotak perangkat jaringan di ruang server/kelas memiliki fungsi yang sama persis.",
+        prompt: "Tentukan apakah setiap pernyataan pengajaran konsep jaringan berikut Benar atau Salah.",
+        statements: [
+          { id: "47.1", text: "Menggunakan diagram topologi sederhana membantu membedakan fungsi menghubungkan perangkat lokal dengan menghubungkan antarjaringan.", correct: "Benar" },
+          { id: "47.2", text: "Access point berfungsi menyediakan koneksi nirkabel (Wi-Fi) bagi perangkat ke jaringan lokal.", correct: "Benar" },
+          { id: "47.3", text: "Pengetahuan konsep jaringan tidak pernah dibutuhkan saat menganalisis masalah konektivitas di sekolah.", correct: "Salah" },
+          { id: "47.4", text: "Mengaitkan perangkat jaringan dengan situasi nyata di sekolah membuat materi lebih kontekstual.", correct: "Benar" }
+        ],
+        explanation: "Memahami peran perangkat jaringan secara konseptual dan kontekstual membantu murid menganalisis alur koneksi serta gangguan jaringan sederhana."
+      },
+      {
+        id: 48,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.2 & P.4 • Analisis Data (Formula Rata-rata & Kondisi Sederhana)",
+        title: "Mengatasi Kesalahan Penulisan Formula di Lembar Kerja",
+        caseText:
+          "Murid mengetikkan `RATA-RATA(B2:B10)` di spreadsheet berbahasa Inggris atau salah menuliskan rentang sel sehingga muncul pesan kesalahan atau hasil yang tidak sesuai.",
+        prompt: "Strategi bimbingan manakah yang paling tepat diberikan guru?",
+        options: [
+          { key: "A", text: "Membimbing murid membaca pesan/indikator kesalahan, memeriksa nama fungsi sesuai bahasa aplikasi serta rentang sel yang dipilih, lalu memverifikasi hasilnya dengan data kecil." },
+          { key: "B", text: "Menyuruh murid berhenti menggunakan spreadsheet selamanya." },
+          { key: "C", text: "Menganggap pesan kesalahan pada aplikasi tidak memiliki arti apa pun." },
+          { key: "D", text: "Menyalin rumus dari kelompok lain tanpa memahami argumen rentang selnya." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Membaca pesan kesalahan, memeriksa sintaks & rentang argumen, serta menguji dengan sampel kecil melatih kemandirian pemecahan masalah."
+      },
+      {
+        id: 49,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.2 & P.1 • Dampak Sosial Informatika (Jejak Digital & Etika Berkomentar)",
+        title: "Membangun Budaya Jejak Digital Positif dan Bertanggung Jawab",
+        caseText:
+          "Dalam proyek pembuatan portofolio digital murid, guru ingin menumbuhkan kesadaran bahwa setiap unggahan dan komentar membentuk identitas serta rekam jejak digital jangka panjang.",
+        prompt: "Aktivitas pembelajaran manakah yang paling sesuai untuk tujuan tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Meminta murid meninjau kembali rancangan unggahan publik mereka dari sudut pandang etika, privasi, dan dampak jangka panjang." },
+          { key: "B", text: "Berdiskusi mengenai bagaimana portofolio digital dapat menampilkan karya dan kompetensi secara positif serta kredibel." },
+          { key: "C", text: "Melatih cara memberikan tanggapan/komentar yang santun, objektif, dan menghargai karya orang lain." },
+          { key: "D", text: "Mendorong murid menyebarkan informasi pribadi orang lain tanpa izin agar unggahan cepat ramai." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Pembelajaran jejak digital yang konstruktif melatih kesadaran privasi, etika berinteraksi, dan pengelolaan identitas digital secara bertanggung jawab."
+      },
+      {
+        id: 50,
+        domain: "PCK",
+        domainLabel: "PCK Informatika",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.2 & P.6 • Plan–Do–See (Evaluasi Menyeluruh Satu Siklus)",
+        title: "Menyusun Kesimpulan Reflektif Siklus Pembelajaran Informatika",
+        caseText:
+          "Setelah menuntaskan satu siklus Plan–Do–See pada materi Berpikir Komputasional dan Analisis Data, guru menyusun catatan praktik baik dan rencana tindak lanjut untuk unit berikutnya.",
+        prompt: "Tentukan apakah setiap pernyataan penyusunan refleksi berikut Benar atau Salah.",
+        statements: [
+          { id: "50.1", text: "Refleksi yang kuat membedakan antara fakta/bukti kelas, penafsiran guru, dan rencana perbaikan konkret yang dapat dilaksanakan.", correct: "Benar" },
+          { id: "50.2", text: "Menuliskan kendala yang terjadi di kelas secara jujur dan objektif merupakan bagian dari profesionalitas, bukan kelemahan yang harus ditutupi.", correct: "Benar" },
+          { id: "50.3", text: "Rencana tindak lanjut sebaiknya selaras dengan kebutuhan murid dan sumber daya nyata yang tersedia di sekolah.", correct: "Benar" },
+          { id: "50.4", text: "Siklus refleksi cukup dilakukan sekali saja di awal tahun ajaran dan tidak perlu diulang.", correct: "Salah" }
+        ],
+        explanation: "Refleksi berkelanjutan berbasis bukti dan konteks nyata menjadi landasan peningkatan kualitas pembelajaran dan pengembangan profesional guru."
+      },
+
+      // =========================================================================
+      // DOMAIN 2: PEDAGOGI UMUM & 4 KOMPETENSI GURU (SOAL 51 - 80)
+      // =========================================================================
+      {
+        id: 51,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.1 & PF.4 • Perencanaan Pembelajaran (CP, TP, ATP)",
+        title: "Menyelaraskan Tujuan Pembelajaran dengan Asesmen Formatif",
+        caseText:
+          "Tujuan pembelajaran dirumuskan agar murid mampu membandingkan dua alternatif solusi berdasarkan kriteria efisiensi dan kejelasan langkah. Namun, kuis akhir hanya meminta murid memilih definisi istilah dari kamus.",
+        prompt: "Perbaikan perencanaan pembelajaran manakah yang paling tepat dilakukan guru?",
+        options: [
+          { key: "A", text: "Menyelaraskan asesmen dengan tujuan melalui tugas perbandingan dua solusi berbasis kriteria yang jelas dan alasan tertulis." },
+          { key: "B", text: "Menghapus tujuan pembelajaran tersebut dan menggantinya dengan menghafal istilah." },
+          { key: "C", text: "Membiarkan ketidakselarasan karena kuis definisi lebih mudah dikoreksi." },
+          { key: "D", text: "Menambah jumlah soal definisi menjadi 50 butir." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Perencanaan yang berkualitas memastikan keselarasan antara tujuan pembelajaran (membandingkan solusi berdasar kriteria), aktivitas, dan asesmen."
+      },
+      {
+        id: 52,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "P.2 • Karakteristik & Kebutuhan Murid (Kesiapan & Minat)",
+        title: "Merancang Pembelajaran Responsif Terhadap Keragaman Kesiapan Murid",
+        caseText:
+          "Dalam satu kelas, sebagian murid sangat cepat menyelesaikan tantangan awal sementara sebagian lainnya memerlukan waktu lebih lama untuk memahami instruksi bertahap.",
+        prompt: "Strategi pedagogik manakah yang paling tepat untuk merespons keragaman tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menyediakan tingkat dukungan/scaffolding bertahap dan pilihan konteks/produk yang tetap mengarah pada tujuan esensial yang sama." },
+          { key: "B", text: "Menggunakan pengelompokan fleksibel sesuai kebutuhan belajar dan tujuan aktivitas." },
+          { key: "C", text: "Menjaga ekspektasi positif terhadap semua murid tanpa memberi cap kemampuan tetap." },
+          { key: "D", text: "Mengabaikan murid yang lambat agar seluruh kelas maju sesuai yang tercepat." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Pembelajaran responsif terhadap keragaman memadukan diferensiasi yang bermakna, pengelompokan fleksibel, dan ekspektasi yang adil."
+      },
+      {
+        id: 53,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "P.3 • Pembelajaran Mendalam (Mindful, Meaningful, Joyful)",
+        title: "Menerapkan Prinsip Pembelajaran Mendalam di Kelas",
+        caseText:
+          "Guru ingin menghadirkan pengalaman belajar yang berkesadaran (mindful), bermakna (meaningful), dan menggembirakan (joyful) dengan alur memahami, mengaplikasi, dan merefleksi.",
+        prompt: "Tentukan apakah setiap pernyataan penerapan pembelajaran mendalam berikut Benar atau Salah.",
+        statements: [
+          { id: "53.1", text: "Mengaitkan materi dengan pengalaman nyata murid membantu membangun makna (meaningful) mengapa konsep tersebut penting dipelajari.", correct: "Benar" },
+          { id: "53.2", text: "Suasana belajar yang menggembirakan (joyful) berarti keterlibatan aktif, rasa aman, dan antusiasme—bukan sekadar keramaian tanpa arah.", correct: "Benar" },
+          { id: "53.3", text: "Tahap merefleksi mengajak murid meninjau proses berpikir, hambatan yang dialami, dan rencana perbaikan ke depan.", correct: "Benar" },
+          { id: "53.4", text: "Pembelajaran mendalam tercapai apabila murid hanya menghafal poin rangkuman tanpa memahami atau menerapkannya.", correct: "Salah" }
+        ],
+        explanation: "Pembelajaran mendalam memadukan kesadaran, kebermaknaan, dan kegembiraan belajar melalui pemahaman, aplikasi, dan refleksi."
+      },
+      {
+        id: 54,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.5 • Pemilihan Model & Pendekatan Pembelajaran",
+        title: "Memilih Model Pembelajaran untuk Kasus Nyata yang Membutuhkan Pemecahan Masalah",
+        caseText:
+          "Guru ingin melatih murid menganalisis penyebab terjadinya antrean panjang dan miskomunikasi informasi saat pendaftaran kegiatan sekolah, lalu merumuskan solusi terbaik.",
+        prompt: "Model pembelajaran manakah yang paling relevan untuk kasus tersebut?",
+        options: [
+          { key: "A", text: "Problem-Based Learning (PBL) yang berpusat pada analisis masalah autentik, investigasi penyebab, dan perumusan solusi." },
+          { key: "B", text: "Ceramah monolog penuh tanpa diskusi atau pemecahan masalah." },
+          { key: "C", text: "Menyalin teks definisi secara berulang selama dua jam pelajaran." },
+          { key: "D", text: "Ulangan harian pilihan ganda setiap 15 menit tanpa pembahasan." }
+        ],
+        correctKeys: ["A"],
+        explanation: "PBL sangat sesuai untuk melatih keterampilan pemecahan masalah berbasis kasus nyata melalui investigasi dan perumusan solusi."
+      },
+      {
+        id: 55,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "P.2 • Teori Belajar (Konstruktivisme & ZPD / Scaffolding)",
+        title: "Menerapkan Scaffolding Bertahap (Fading) Sesuai Kemandirian Murid",
+        caseText:
+          "Pada awal unit, murid membutuhkan kerangka panduan langkah (scaffolding) untuk menyusun rencana kerja kelompok. Setelah beberapa pertemuan, sebagian murid mulai mampu menyusunnya sendiri.",
+        prompt: "Prinsip pemberian scaffolding manakah yang tepat diterapkan guru? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Memberikan bantuan terstruktur saat murid berada di zona perkembangan proksimal (ZPD) dan belum mandiri." },
+          { key: "B", text: "Mengurangi bantuan secara bertahap (fading) ketika murid sudah menunjukkan pemahaman dan kemandirian." },
+          { key: "C", text: "Menyesuaikan bentuk bantuan berdasarkan respons dan kebutuhan aktual murid selama proses berlangsung." },
+          { key: "D", text: "Memaksakan bantuan yang sama kaku meski murid sudah mandiri atau justru belum siap." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Scaffolding bersifat adaptif dan sementara: menopang saat dibutuhkan lalu dikurangi bertahap seiring tumbuhnya kemandirian."
+      },
+      {
+        id: 56,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "P.6 • Asesmen & Umpan Balik Berkesinambungan",
+        title: "Memberikan Umpan Balik Formatif yang Spesifik dan Konstruktif",
+        caseText:
+          "Murid menyerahkan draf rencana proyek dan analisis kasus. Guru ingin memberikan umpan balik formatif agar kualitas draf meningkat sebelum presentasi akhir.",
+        prompt: "Tentukan apakah setiap pernyataan umpan balik formatif berikut Benar atau Salah.",
+        statements: [
+          { id: "56.1", text: "Menyebutkan bagian yang sudah tepat sekaligus menunjukkan bagian yang perlu diperbaiki beserta alasannya membuat umpan balik lebih bermakna.", correct: "Benar" },
+          { id: "56.2", text: "Umpan balik formatif sebaiknya diberikan cukup waktu sebelum tugas akhir agar murid sempat melakukan perbaikan.", correct: "Benar" },
+          { id: "56.3", text: "Umpan balik hanya berguna apabila diberikan di akhir semester bersamaan dengan pembagian rapor.", correct: "Salah" },
+          { id: "56.4", text: "Mengajukan pertanyaan klarifikasi yang memicu murid mengevaluasi argumennya sendiri mendukung student agency.", correct: "Benar" }
+        ],
+        explanation: "Umpan balik formatif yang efektif bersifat tepat waktu, spesifik, berorientasi perbaikan, dan mendorong kemandirian berpikir murid."
+      },
+      {
+        id: 57,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.3 • Pengelolaan Kelas Aman & Disiplin Positif",
+        title: "Menangani Murid yang Terlambat Masuk Kelas dan Mengganggu Teman",
+        caseText:
+          "Seorang murid datang terlambat 15 menit dan langsung mengajak teman di sebelahnya bercanda keras sehingga mengganggu penjelasan di kelas.",
+        prompt: "Respons pengelolaan kelas berbasis disiplin positif manakah yang paling tepat?",
+        options: [
+          { key: "A", text: "Membentak dan mengejek murid di depan seluruh kelas agar ia kapok." },
+          { key: "B", text: "Menenangkan situasi dengan komunikasi asertif, mengarahkan murid bergabung ke tempat duduk yang tepat tanpa mempermalukan, lalu membicarakan kesepakatan kelas secara proporsional." },
+          { key: "C", text: "Mengusir murid keluar ruangan tanpa pencatatan maupun tindak lanjut pembinaan." },
+          { key: "D", text: "Menghentikan seluruh pelajaran selama 30 menit untuk mendebat murid." }
+        ],
+        correctKeys: ["B"],
+        explanation: "Disiplin positif menjaga ketertiban dan martabat murid melalui komunikasi asertif, ketenangan, dan rujukan pada kesepakatan kelas."
+      },
+      {
+        id: 58,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "P.1 • Literasi, Numerasi & HOTS",
+        title: "Merancang Tugas HOTS (Menganalisis, Mengevaluasi, Mengkreasi)",
+        caseText:
+          "Guru ingin meningkatkan kemampuan berpikir tingkat tinggi (HOTS) murid agar tidak berhenti pada ingatan hafalan faktual.",
+        prompt: "Ciri tugas pembelajaran yang mendorong HOTS manakah yang paling tepat dirancang? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Meminta murid menganalisis hubungan sebab-akibat atau membandingkan kelebihan/kekurangan dua alternatif berdasarkan bukti." },
+          { key: "B", text: "Meminta murid mengevaluasi kelayakan suatu solusi atau kesimpulan menggunakan kriteria tertentu." },
+          { key: "C", text: "Meminta murid merancang/mengkreasi solusi atau produk baru untuk menjawab situasi permasalahan." },
+          { key: "D", text: "Meminta murid menyebutkan ulang definisi kata per kata persis seperti di buku." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "HOTS mencakup ranah kognitif tingkat tinggi seperti menganalisis, mengevaluasi, dan mengkreasi dalam konteks pemecahan masalah."
+      },
+      {
+        id: 59,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "P.4 • Integrasi TIK Secara Kritis & Kreatif (TPACK)",
+        title: "Memilih Media & Teknologi Digital Secara Tepat Guna",
+        caseText:
+          "Dalam merancang pembelajaran, guru mempertimbangkan penggunaan media digital interaktif serta kesiapan perangkat dan jaringan di sekolah.",
+        prompt: "Tentukan apakah setiap pernyataan integrasi TIK berikut Benar atau Salah.",
+        statements: [
+          { id: "59.1", text: "Teknologi dipilih karena memperkuat pemahaman konsep dan keterlibatan belajar, bukan sekadar karena terlihat canggih.", correct: "Benar" },
+          { id: "59.2", text: "Guru perlu mempertimbangkan ketersediaan infrastruktur, aksesibilitas, dan keamanan data murid saat memilih platform digital.", correct: "Benar" },
+          { id: "59.3", text: "Jika fasilitas digital terbatas, guru perlu menyesuaikan strategi agar tujuan belajar tetap tercapai secara adil.", correct: "Benar" },
+          { id: "59.4", text: "Penggunaan aplikasi digital selalu menjamin peningkatan pemahaman meskipun tidak selaras dengan tujuan pembelajaran.", correct: "Salah" }
+        ],
+        explanation: "Integrasi TIK yang tepat (TPACK) menyelaraskan aspek teknologi, pedagogi, dan konten serta menyesuaikan kondisi nyata kelas."
+      },
+      {
+        id: 60,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.6 • Refleksi & Tindak Lanjut Pembelajaran",
+        title: "Menyikapi Hasil Evaluasi yang Menunjukkan Banyak Kekeliruan Serupa",
+        caseText:
+          "Hasil pekerjaan murid menunjukkan kesalahan yang sama pada satu indikator penting karena sebagian besar belum memahami prasyarat konsep.",
+        prompt: "Tindakan pedagogik manakah yang paling tepat dilakukan guru?",
+        options: [
+          { key: "A", text: "Mengulang penjelasan inti prasyarat dengan pendekatan/contoh berbeda yang lebih konkret, lalu memberi latihan terbimbing sebelum melanjutkan." },
+          { key: "B", text: "Menganggap murid tidak memperhatikan dan langsung memberi ujian ulang dengan bentuk soal yang identik." },
+          { key: "C", text: "Melanjutkan ke materi baru karena waktu sudah habis." },
+          { key: "D", text: "Menurunkan nilai seluruh kelas tanpa memberikan umpan balik." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Hasil asesmen yang menunjukkan pola kekeliruan bersama menjadi dasar perbaikan strategi pengajaran dan penguatan prasyarat sebelum melangkah jauh."
+      },
+      {
+        id: 61,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "P.2 • Pembelajaran Berpusat pada Murid (Student Agency)",
+        title: "Menumbuhkan Kemandirian & Tanggung Jawab Belajar (Student Agency)",
+        caseText:
+          "Guru ingin murid lebih aktif mengambil peran dalam merencanakan langkah belajar, memantau kemajuan, dan merefleksikan hasil kerja mereka.",
+        prompt: "Praktik pembelajaran manakah yang mendorong student agency secara sehat? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Memberi ruang pilihan cara/topik/produk dalam batas rubrik dan tujuan pembelajaran yang jelas." },
+          { key: "B", text: "Mengajak murid menyusun rencana kerja dan mengecek kemajuan tugas secara mandiri/berkelompok." },
+          { key: "C", text: "Membiasakan refleksi diri atas strategi belajar yang berhasil maupun yang perlu diperbaiki." },
+          { key: "D", text: "Melepas seluruh bimbingan dan rubrik sehingga murid kebingungan arah." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Student agency tumbuh ketika murid memiliki suara, pilihan, dan rasa tanggung jawab dalam proses belajar dengan panduan yang terarah."
+      },
+      {
+        id: 62,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "P.3 • Keselamatan Psikologis & Pencegahan Perundungan",
+        title: "Menciptakan Ruang Kelas yang Aman Secara Psikologis",
+        caseText:
+          "Beberapa murid enggan menjawab pertanyaan atau mengemukakan pendapat karena takut ditertawakan jika jawabannya keliru.",
+        prompt: "Tentukan apakah setiap pernyataan penciptaan iklim kelas aman berikut Benar atau Salah.",
+        statements: [
+          { id: "62.1", text: "Menormalisasi bahwa salah menjawab adalah bagian wajar dari proses belajar membantu mengurangi kecemasan murid.", correct: "Benar" },
+          { id: "62.2", text: "Menetapkan dan menegakkan aturan saling menghargai pendapat membangun rasa aman psikologis di kelas.", correct: "Benar" },
+          { id: "62.3", text: "Membiarkan ejekan saat ada murid salah jawab akan membuat kelas menjadi lebih hidup dan kompetitif.", correct: "Salah" },
+          { id: "62.4", text: "Apresiasi terhadap usaha berpikir mendorong keberanian murid berpartisipasi aktif.", correct: "Benar" }
+        ],
+        explanation: "Keselamatan psikologis memungkinkan murid bereksperimen, bertanya, dan belajar dari kesalahan tanpa rasa takut dipermalukan."
+      },
+      {
+        id: 63,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.5 • Strategi Sesuai Konteks & Kearifan Lokal",
+        title: "Mengaitkan Strategi Pembelajaran dengan Lingkungan & Budaya Lokal",
+        caseText:
+          "Guru menyusun aktivitas belajar yang mengaitkan permasalahan sehari-hari di lingkungan sekitar sekolah dengan kompetensi yang ditargetkan.",
+        prompt: "Manfaat utama mengaitkan pembelajaran dengan konteks lokal adalah...",
+        options: [
+          { key: "A", text: "Menjadikan pembelajaran lebih relevan, kontekstual, dan dekat dengan pengalaman nyata murid sehingga mudah dipahami dan diterapkan." },
+          { key: "B", text: "Menggantikan seluruh capaian pembelajaran nasional dengan cerita rakyat semata." },
+          { key: "C", text: "Menghindari penggunaan sumber belajar yang relevan di luar lingkungan terdekat." },
+          { key: "D", text: "Membatasi wawasan murid agar tidak mengenal perkembangan yang lebih luas." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Kontekstualisasi berbasis lingkungan dan kearifan lokal memperdalam makna belajar tanpa mengabaikan capaian kompetensi yang dituju."
+      },
+      {
+        id: 64,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "P.6 • Asesmen Diagnostik, Formatif & Sumatif",
+        title: "Membedakan Fungsi Asesmen Diagnostik, Formatif, dan Sumatif",
+        caseText:
+          "Dalam satu unit pembelajaran, guru merancang beberapa jenis asesmen pada waktu dan tujuan yang berbeda.",
+        prompt: "Pernyataan manakah yang tepat mengenai fungsi berbagai jenis asesmen tersebut? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Asesmen diagnostik membantu memetakan kesiapan, kemampuan awal, atau miskonsepsi sebelum pembelajaran inti." },
+          { key: "B", text: "Asesmen formatif memantau proses belajar dan memberikan umpan balik untuk perbaikan pembelajaran." },
+          { key: "C", text: "Asesmen sumatif menilai ketercapaian hasil belajar pada akhir unit/periode pembelajaran." },
+          { key: "D", text: "Semua jenis asesmen memiliki fungsi dan waktu penggunaan yang persis sama." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Asesmen diagnostik, formatif, dan sumatif memiliki peran komplementer: memetakan awal, membimbing proses, dan mengevaluasi capaian akhir."
+      },
+      {
+        id: 65,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "K.1 • Kompetensi Kepribadian (Integritas, Keteladanan & Keberagaman)",
+        title: "Keteladanan dan Sikap Menghargai Keberagaman",
+        caseText:
+          "Di kelas terdapat murid dengan latar belakang budaya, bahasa daerah, dan kondisi ekonomi yang berbeda-beda.",
+        prompt: "Tentukan apakah setiap pernyataan sikap kepribadian guru berikut Benar atau Salah.",
+        statements: [
+          { id: "65.1", text: "Guru menunjukkan sikap adil, santun, dan menghargai perbedaan latar belakang seluruh murid dalam setiap interaksi.", correct: "Benar" },
+          { id: "65.2", text: "Keteladanan guru tampak dari kesesuaian antara nilai yang disampaikan dan tindakan nyata sehari-hari.", correct: "Benar" },
+          { id: "65.3", text: "Bersikap pilih kasih terhadap kelompok tertentu dapat dibenarkan apabila mereka lebih akrab dengan guru.", correct: "Salah" },
+          { id: "65.4", text: "Menjaga kerahasiaan informasi sensitif/pribadi murid merupakan bentuk tanggung jawab etis guru.", correct: "Benar" }
+        ],
+        explanation: "Kompetensi kepribadian menuntut integritas, keadilan, penghargaan terhadap keberagaman, dan keteladanan moral/emosional."
+      },
+      {
+        id: 66,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "K.2 • Kompetensi Kepribadian (Refleksi Berkelanjutan & Growth Mindset)",
+        title: "Menyikapi Umpan Balik Observasi Pembelajaran Secara Konstruktif",
+        caseText:
+          "Setelah sesi pembelajaran diobservasi, pengamat menyampaikan catatan mengenai alokasi waktu diskusi yang kurang proporsional sehingga kesimpulan akhir terburu-buru.",
+        prompt: "Sikap yang paling mencerminkan growth mindset dan refleksi berkelanjutan adalah...",
+        options: [
+          { key: "A", text: "Menerima catatan dengan terbuka, menganalisis penyebabnya secara objektif, dan merancang pengaturan waktu yang lebih baik pada pertemuan berikutnya." },
+          { key: "B", text: "Merasa tersinggung dan menolak melakukan refleksi sama sekali." },
+          { key: "C", text: "Menyalahkan murid sepenuhnya karena diskusi berjalan lambat." },
+          { key: "D", text: "Mengabaikan bagian penutup selamanya karena dianggap kurang penting." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Growth mindset tercermin dari keterbukaan terhadap masukan, refleksi objektif, dan komitmen memperbaiki praktik secara berkelanjutan."
+      },
+      {
+        id: 67,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "K.3 • Kompetensi Kepribadian (Keputusan Konsisten untuk Budaya Belajar)",
+        title: "Konsistensi Keputusan dalam Membangun Budaya Belajar Positif",
+        caseText:
+          "Guru ingin menumbuhkan budaya jujur, tekun, dan saling menghargai dalam mengerjakan tugas dan proyek di kelas.",
+        prompt: "Tindakan manakah yang menunjukkan keputusan konsisten untuk mengembangkan budaya belajar murid? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menerapkan aturan dan kesepakatan belajar secara konsisten dan proporsional kepada semua murid." },
+          { key: "B", text: "Membiasakan murid menjelaskan proses dan alasan di balik hasil pekerjaannya, bukan sekadar mengejar hasil instan." },
+          { key: "C", text: "Memberikan apresiasi atas proses kerja keras dan perbaikan usaha murid." },
+          { key: "D", text: "Mengubah-ubah aturan secara sewenang-wenang tanpa dasar yang jelas." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Konsistensi bersikap adil, menghargai proses belajar, dan menumbuhkan kejujuran memperkuat budaya belajar yang sehat dan berkelanjutan."
+      },
+      {
+        id: 68,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "S.1 • Kompetensi Sosial (Komunikasi Inklusif, Empatik & Efektif)",
+        title: "Komunikasi Efektif dan Empatik dengan Murid",
+        caseText:
+          "Seorang murid tampak murung, pendiam, dan tertinggal beberapa tugas selama sepekan terakhir.",
+        prompt: "Tentukan apakah setiap pernyataan komunikasi sosial guru berikut Benar atau Salah.",
+        statements: [
+          { id: "68.1", text: "Menanyakan kabar secara empatik dan mendengarkan dengan penuh perhatian membantu murid merasa didengar dan aman.", correct: "Benar" },
+          { id: "68.2", text: "Bahasa komunikasi yang jelas, sopan, dan mudah dipahami mendukung keterlibatan semua murid termasuk yang berkebutuhan khusus.", correct: "Benar" },
+          { id: "68.3", text: "Menghakimi murid sebagai 'pemalas' di hadapan teman-temannya sebelum mengetahui kondisinya adalah komunikasi empatik.", correct: "Salah" },
+          { id: "68.4", text: "Menyesuaikan cara penyampaian informasi agar inklusif membantu mencegah kesalahpahaman.", correct: "Benar" }
+        ],
+        explanation: "Komunikasi sosial yang efektif dan empatik mengutamakan kejelasan, rasa hormat, mendengarkan aktif, dan kepekaan terhadap kondisi murid."
+      },
+      {
+        id: 69,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "S.2 • Kompetensi Sosial (Kolaborasi dengan Pendidik, Orang Tua & Masyarakat)",
+        title: "Menjalin Sinergi dengan Rekan Guru dan Orang Tua Secara Konstruktif",
+        caseText:
+          "Untuk mendukung proyek pembelajaran murid yang membutuhkan pendampingan belajar di rumah dan koordinasi lintas mata pelajaran, guru perlu berkomunikasi dengan rekan sejawat dan orang tua.",
+        prompt: "Langkah kolaborasi manakah yang paling tepat dilakukan guru?",
+        options: [
+          { key: "A", text: "Berkoordinasi secara terbuka, saling menghormati peran, menyampaikan tujuan dan informasi yang jelas, serta mencari solusi bersama demi kepentingan belajar murid." },
+          { key: "B", text: "Bekerja sendiri secara tertutup dan enggan berbagi informasi penting dengan wali kelas maupun orang tua." },
+          { key: "C", text: "Menyalahkan pihak lain apabila ada kendala tanpa berdiskusi mencari jalan keluar." },
+          { key: "D", text: "Menghubungi orang tua hanya untuk mengeluhkan kekurangan anaknya tanpa solusi." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Kolaborasi yang efektif bertumpu pada komunikasi terbuka, saling menghargai peran, dan fokus bersama pada kepentingan perkembangan murid."
+      },
+      {
+        id: 70,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "S.3 • Kompetensi Sosial (Partisipasi dalam Komunitas Profesi & Belajar)",
+        title: "Berpartisipasi Aktif dalam Komunitas Belajar Guru",
+        caseText:
+          "Guru mengikuti pertemuan komunitas belajar (seperti MGMP/Kombel sekolah) untuk berbagi pengalaman praktik mengajar dan mempelajari pembaruan kurikulum.",
+        prompt: "Peran aktif guru dalam komunitas pembelajaran manakah yang paling tepat? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Berbagi praktik baik maupun tantangan nyata di kelas secara terbuka untuk dipelajari bersama." },
+          { key: "B", text: "Mempelajari gagasan dan strategi baru dari rekan sejawat untuk diadaptasi sesuai konteks kelas sendiri." },
+          { key: "C", text: "Berkolaborasi menyusun atau menelaah perangkat ajar, asesmen, dan refleksi pembelajaran." },
+          { key: "D", text: "Hanya hadir secara formalitas tanpa terlibat dalam diskusi maupun perbaikan praktik." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Komunitas belajar profesi menjadi wadah saling menguatkan, berbagi bukti praktik, dan mengembangkan kualitas pembelajaran secara kolaboratif."
+      },
+      {
+        id: 71,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "PF.1 & PF.4 • Tujuan Pendidikan & Kurikulum Kontekstual",
+        title: "Menghubungkan Pembelajaran Kelas dengan Visi & Tujuan Satuan Pendidikan",
+        caseText:
+          "Satuan pendidikan memiliki visi membentuk lulusan yang bernalar kritis, mandiri, berakhlak mulia, dan peduli terhadap lingkungan.",
+        prompt: "Tentukan apakah setiap pernyataan keselarasan tujuan pendidikan berikut Benar atau Salah.",
+        statements: [
+          { id: "71.1", text: "Perancangan pembelajaran selayaknya mendukung visi dan tujuan satuan pendidikan sekaligus memenuhi capaian pembelajaran mata pelajaran.", correct: "Benar" },
+          { id: "71.2", text: "Mengembangkan karakter dan keterampilan berpikir kritis terintegrasi dalam aktivitas belajar sehari-hari, bukan sekadar slogan.", correct: "Benar" },
+          { id: "71.3", text: "Tujuan satuan pendidikan tidak memiliki kaitan apa pun dengan cara guru mengelola kelas dan asesmen.", correct: "Salah" },
+          { id: "71.4", text: "Adaptasi kurikulum di kelas tetap menjaga substansi kompetensi yang ditargetkan.", correct: "Benar" }
+        ],
+        explanation: "Guru mengaitkan praktik pembelajaran sehari-hari dengan tujuan pendidikan pada satuan pendidikan serta kerangka kurikulum secara adaptif."
+      },
+      {
+        id: 72,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "PF.3 & P.2 • Potensi & Kebutuhan Murid Berbasis Konteks",
+        title: "Memetakan Kebutuhan Belajar Murid Sebelum Menentukan Strategi",
+        caseText:
+          "Awal semester dimulai dengan kelas baru yang belum pernah diajar sebelumnya. Guru ingin mengetahui kesiapan, minat, dan hambatan belajar murid.",
+        prompt: "Tindakan awal manakah yang paling tepat dilakukan guru?",
+        options: [
+          { key: "A", text: "Melakukan pemetaan awal melalui aktivitas/asesmen diagnostik yang ramah dan bermakna untuk merancang strategi yang sesuai." },
+          { key: "B", text: "Langsung memberikan ujian sumatif berat di hari pertama untuk menguji mental murid." },
+          { key: "C", text: "Mengasumsikan seluruh murid memiliki latar belakang dan kecepatan belajar yang sama." },
+          { key: "D", text: "Menunda pengenalan tujuan belajar hingga akhir bulan." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Memetakan karakteristik dan kebutuhan belajar murid sejak awal membantu guru merancang pengalaman belajar yang tepat sasaran dan inklusif."
+      },
+      {
+        id: 73,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "PF.5 • Mengembangkan Praktik Profesional Inovatif & Empiris",
+        title: "Mengembangkan Praktik Pembelajaran Berbasis Bukti & Inovasi",
+        caseText:
+          "Guru ingin memperbaiki keterlibatan dan pemahaman murid pada topik yang selama ini dianggap sulit oleh banyak peserta didik.",
+        prompt: "Langkah pengembangan praktik profesional manakah yang paling tepat? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Mengidentifikasi masalah spesifik dan akar penyebabnya berdasarkan data/bukti kelas." },
+          { key: "B", text: "Merancang inovasi strategi/media/asesmen yang terukur dan sesuai konteks kelas." },
+          { key: "C", text: "Mengumpulkan bukti dampak penerapan lalu merefleksikannya untuk penyempurnaan lanjutan." },
+          { key: "D", text: "Mengubah metode setiap hari secara acak tanpa dasar evaluasi maupun tujuan jelas." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Praktik profesional yang kuat bersifat konseptual, empiris, dan inovatif—berangkat dari masalah nyata, terukur dampaknya, dan direfleksikan."
+      },
+      {
+        id: 74,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "P.5 • Kerja Kelompok & Kolaborasi Murid",
+        title: "Mengelola Kerja Kelompok Agar Efektif dan Adil",
+        caseText:
+          "Dalam kerja kelompok, guru ingin memastikan setiap anggota memiliki peran bermakna dan tidak ada yang menumpang nama saja.",
+        prompt: "Tentukan apakah setiap pernyataan pengelolaan kerja kelompok berikut Benar atau Salah.",
+        statements: [
+          { id: "74.1", text: "Pembagian peran yang jelas dan saling bergantung mendorong keterlibatan aktif seluruh anggota kelompok.", correct: "Benar" },
+          { id: "74.2", text: "Guru memantau jalannya diskusi kelompok dan memberikan bantuan/pertanyaan pemandu saat diperlukan.", correct: "Benar" },
+          { id: "74.3", text: "Menilai kontribusi individu/proses selain hasil bersama membantu mendorong akuntabilitas dalam kelompok.", correct: "Benar" },
+          { id: "74.4", text: "Setelah memberi tugas kelompok, guru sebaiknya meninggalkan kelas tanpa pemantauan hingga jam berakhir.", correct: "Salah" }
+        ],
+        explanation: "Kerja kelompok efektif membutuhkan struktur peran, pemantauan fasilitatif guru, akuntabilitas individu maupun tim, serta refleksi kolaborasi."
+      },
+      {
+        id: 75,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.2 • Motivasi Belajar Intrinsik & Ekstrinsik",
+        title: "Menumbuhkan Motivasi Belajar yang Berkelanjutan pada Murid",
+        caseText:
+          "Beberapa murid hanya mengerjakan tugas jika diancam nilai jelek, tetapi cepat kehilangan minat ketika tidak diawasi.",
+        prompt: "Strategi pedagogik manakah yang paling tepat untuk menumbuhkan motivasi yang lebih bertahan lama?",
+        options: [
+          { key: "A", text: "Mengaitkan tugas dengan tujuan bermakna, memberi tantangan yang sesuai kemampuan, menyediakan pilihan relevan, dan memberikan umpan balik yang membangun." },
+          { key: "B", text: "Mengandalkan ancaman hukuman berat pada setiap pertemuan." },
+          { key: "C", text: "Menghapus seluruh umpan balik agar murid tidak bergantung pada guru." },
+          { key: "D", text: "Memberikan tugas mekanis tanpa kaitan dengan pemahaman atau tujuan belajar." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Motivasi yang kuat dan berkelanjutan tumbuh dari rasa bermakna, otonomi/pilihan yang terarah, rasa mampu (competence), dan umpan balik positif."
+      },
+      {
+        id: 76,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "P.1 • Pertanyaan Pemantik & Diskusi Kelas",
+        title: "Mengajukan Pertanyaan Pemantik untuk Menggali Penalaran Murid",
+        caseText:
+          "Saat membuka pembelajaran atau mendalami kasus, guru ingin memancing murid berpikir kritis dan mengemukakan alasan, bukan sekadar menjawab 'ya' atau 'tidak'.",
+        prompt: "Ciri pertanyaan yang baik untuk menggali penalaran murid manakah yang paling tepat? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Bersifat terbuka dan menuntut alasan, bukti, atau perbandingan (misalnya 'mengapa' atau 'bagaimana jika')." },
+          { key: "B", text: "Memberi jeda waktu berpikir (wait time) yang cukup sebelum meminta jawaban." },
+          { key: "C", text: "Ditindaklanjuti dengan pertanyaan pendalaman (probing) atas jawaban murid." },
+          { key: "D", text: "Selalu menuntut jawaban hafalan satu kata tanpa penjelasan." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Pertanyaan terbuka, jeda berpikir (wait time), dan probing mendalam menggeser diskusi dari hafalan menuju penalaran kritis."
+      },
+      {
+        id: 77,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "P.6 • Portofolio & Asesmen Berbasis Kinerja",
+        title: "Memanfaatkan Portofolio dan Unjuk Kerja dalam Penilaian",
+        caseText:
+          "Guru menggunakan penilaian unjuk kerja dan kumpulan karya terpilih (portofolio) untuk melihat perkembangan belajar murid selama unit berlangsung.",
+        prompt: "Tentukan apakah setiap pernyataan penilaian kinerja & portofolio berikut Benar atau Salah.",
+        statements: [
+          { id: "77.1", text: "Portofolio memungkinkan guru dan murid melihat perkembangan kemampuan dari draf awal hingga hasil yang telah diperbaiki.", correct: "Benar" },
+          { id: "77.2", text: "Rubrik penilaian yang jelas dan dikomunikasikan sejak awal membantu murid memahami standar kualitas yang diharapkan.", correct: "Benar" },
+          { id: "77.3", text: "Penilaian kinerja tidak memerlukan kriteria/rubrik karena penilaian bersifat perasaan semata.", correct: "Salah" },
+          { id: "77.4", text: "Mengajak murid memilih dan merefleksikan karya terbaiknya melatih kemampuan evaluasi diri.", correct: "Benar" }
+        ],
+        explanation: "Penilaian kinerja dan portofolio dengan rubrik transparan menilai proses maupun hasil secara objektif serta melatih refleksi diri murid."
+      },
+      {
+        id: 78,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "PG",
+        formatLabel: "PG Tunggal",
+        competency: "P.3 • Manajemen Waktu & Transisi Kegiatan Pembelajaran",
+        title: "Menjaga Kelancaran Transisi Antar-Aktivitas di Kelas",
+        caseText:
+          "Banyak waktu pembelajaran terbuang saat perpindahan dari penjelasan klasikal ke kerja kelompok dan dari kerja kelompok ke presentasi/penutup.",
+        prompt: "Langkah pengelolaan kelas manakah yang paling tepat untuk mengefektifkan transisi?",
+        options: [
+          { key: "A", text: "Memberikan instruksi transisi yang singkat, jelas, dan tertulis/terlihat, menetapkan batas waktu transisi, serta memandu langsung perpindahan tahap." },
+          { key: "B", text: "Membiarkan murid menebak sendiri apa yang harus dilakukan saat berpindah aktivitas." },
+          { key: "C", text: "Menghilangkan sesi penutup dan refleksi setiap pertemuan." },
+          { key: "D", text: "Menambah kerumitan aturan mendadak di tengah perpindahan tempat duduk." }
+        ],
+        correctKeys: ["A"],
+        explanation: "Instruksi transisi yang jelas, terstruktur, dan berbatas waktu menjaga alur pembelajaran tetap fokus dan efisien."
+      },
+      {
+        id: 79,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "MCMA",
+        formatLabel: "PGK MCMA",
+        competency: "S.1 & S.2 • Inklusi & Kemitraan Pendukung Belajar Murid",
+        title: "Mendukung Murid dengan Hambatan Belajar atau Kebutuhan Khusus",
+        caseText:
+          "Seorang murid mengalami kesulitan membaca teks panjang dalam waktu singkat dan cepat lelah saat menyalin banyak catatan.",
+        prompt: "Dukungan inklusif manakah yang paling tepat diberikan guru? (Pilih lebih dari satu)",
+        options: [
+          { key: "A", text: "Menyediakan ringkasan/poin utama yang terstruktur, format audio/visual pendukung, atau waktu/porsi yang proporsional tanpa mengurangi esensi konsep." },
+          { key: "B", text: "Berkonsultasi dengan guru BK/pendamping atau wali kelas untuk memahami strategi dukungan yang paling sesuai." },
+          { key: "C", text: "Menilai pemahaman murid melalui cara yang adil (seperti penjelasan lisan atau tugas terstruktur) sesuai kemampuannya." },
+          { key: "D", text: "Mengabaikan kebutuhan murid karena menganggap perlakuan sama rata berarti tidak memberi bantuan apa pun." }
+        ],
+        correctKeys: ["A", "B", "C"],
+        explanation: "Keadilan dalam pendidikan inklusif berarti memberikan akomodasi dan dukungan yang sesuai kebutuhan murid agar mereka dapat belajar dan menunjukkan pemahaman secara bermartabat."
+      },
+      {
+        id: 80,
+        domain: "PEDAGOGI",
+        domainLabel: "Pedagogi Umum",
+        format: "BS",
+        formatLabel: "PGK Benar/Salah",
+        competency: "K.1, K.2, S.2 & PF.5 • Refleksi Profesional Menyeluruh",
+        title: "Sintesis Peran Guru Profesional dalam Siklus Pembelajaran",
+        caseText:
+          "Seorang calon guru Informatika merefleksikan seluruh pengalaman merancang, melaksanakan, menilai, dan mengevaluasi pembelajaran sepanjang praktik profesi.",
+        prompt: "Tentukan apakah setiap pernyataan sintesis profesionalitas guru berikut Benar atau Salah.",
+        statements: [
+          { id: "80.1", text: "Guru profesional memadukan penguasaan materi/PCK, strategi pedagogik berpusat pada murid, kematangan kepribadian, dan kolaborasi sosial.", correct: "Benar" },
+          { id: "80.2", text: "Evaluasi diri yang jujur atas keterbatasan dan keberhasilan praktik mengajar mendorong perbaikan berkelanjutan.", correct: "Benar" },
+          { id: "80.3", text: "Keputusan pembelajaran yang baik selalu mempertimbangkan tujuan belajar, karakteristik murid, bukti asesmen, dan konteks kelas.", correct: "Benar" },
+          { id: "80.4", text: "Setelah memperoleh sertifikat pendidik, guru tidak lagi perlu melakukan refleksi maupun belajar mengikuti perkembangan baru.", correct: "Salah" }
+        ],
+        explanation: "Profesionalitas guru bersifat berkelanjutan: memadukan empat kompetensi, bertumpu pada bukti dan konteks murid, serta terus belajar sepanjang hayat."
+      }
+    ];
+
+    /**
+     * Storage & State Management
+     */
+    const STORAGE_KEY = "ukpppg_2026_informatika_80_quiz_v1";
+    const EXAM_DURATION_SEC = 120 * 60; // 120 menit simulasi
+
+    const defaultState = () => ({
+      mode: "practice", // "practice" | "exam"
+      domainFilter: "ALL", // "ALL" | "PCK" | "PEDAGOGI"
+      formatFilter: "ALL", // "ALL" | "PG" | "BS" | "MCMA"
+      currentQuestionId: 1,
+      answers: {}, // qId -> string[] (PG/MCMA) | Record<stmtId, "Benar"|"Salah"> (BS)
+      checkedInPractice: {}, // qId -> boolean
+      flagged: {}, // qId -> boolean
+      submittedExam: false,
+      reviewFilter: "all", // "all" | "wrong" | "correct"
+      remainingSeconds: EXAM_DURATION_SEC
+    });
+
+    let state = loadState();
+    let timerInterval = null;
+    let confirmCallback = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return {
+          ...defaultState(),
+          ...parsed,
+          answers: parsed.answers && typeof parsed.answers === "object" ? parsed.answers : {},
+          checkedInPractice: parsed.checkedInPractice && typeof parsed.checkedInPractice === "object" ? parsed.checkedInPractice : {},
+          flagged: parsed.flagged && typeof parsed.flagged === "object" ? parsed.flagged : {}
+        };
+      } catch (err) {
+        console.warn("Gagal memuat penyimpanan lokal:", err);
+        return defaultState();
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        const badge = document.getElementById("saveIndicator");
+        if (badge) {
+          badge.classList.remove("hidden");
+          badge.classList.add("inline-flex");
+        }
+      } catch (err) {
+        console.warn("Gagal menyimpan ke localStorage:", err);
+      }
+    }
+
+    function getFilteredQuestions() {
+      return QUESTIONS.filter((q) => {
+        const matchDomain = state.domainFilter === "ALL" || q.domain === state.domainFilter;
+        const matchFormat = state.formatFilter === "ALL" || q.format === state.formatFilter;
+        return matchDomain && matchFormat;
+      });
+    }
+
+    function getCurrentQuestion() {
+      const filtered = getFilteredQuestions();
+      if (filtered.length === 0) return null;
+      const found = filtered.find((q) => q.id === state.currentQuestionId);
+      if (found) return found;
+      state.currentQuestionId = filtered[0].id;
+      return filtered[0];
+    }
+
+    function isQuestionAnswered(q) {
+      const ans = state.answers[q.id];
+      if (!ans) return false;
+      if (q.format === "BS") {
+        return q.statements.every((st) => ans[st.id] === "Benar" || ans[st.id] === "Salah");
+      }
+      return Array.isArray(ans) && ans.length > 0;
+    }
+
+    function isQuestionPartiallyAnswered(q) {
+      const ans = state.answers[q.id];
+      if (!ans) return false;
+      if (q.format === "BS") {
+        const count = q.statements.filter((st) => ans[st.id] === "Benar" || ans[st.id] === "Salah").length;
+        return count > 0 && count < q.statements.length;
+      }
+      return Array.isArray(ans) && ans.length > 0;
+    }
+
+    function evaluateQuestion(q) {
+      const ans = state.answers[q.id];
+      if (q.format === "BS") {
+        const safe = ans || {};
+        let correctCount = 0;
+        q.statements.forEach((st) => {
+          if (safe[st.id] === st.correct) correctCount += 1;
+        });
+        const isFullCorrect = correctCount === q.statements.length;
+        return {
+          isFullCorrect,
+          correctStatements: correctCount,
+          totalStatements: q.statements.length,
+          detail: `${correctCount}/${q.statements.length} pernyataan benar`
+        };
+      }
+
+      const selected = Array.isArray(ans) ? [...ans].sort() : [];
+      const expected = [...q.correctKeys].sort();
+      const isFullCorrect =
+        selected.length === expected.length &&
+        selected.every((val, idx) => val === expected[idx]);
+
+      if (q.format === "PG") {
+        return {
+          isFullCorrect,
+          detail: isFullCorrect
+            ? "Jawaban tunggal tepat"
+            : `Dipilih: ${selected[0] || "-"} • Kunci: ${expected[0]}`
+        };
+      }
+
+      // MCMA
+      const rightPicks = selected.filter((k) => q.correctKeys.includes(k)).length;
+      const wrongPicks = selected.filter((k) => !q.correctKeys.includes(k)).length;
+      return {
+        isFullCorrect,
+        detail: isFullCorrect
+          ? "Seluruh pilihan kunci terpilih tepat"
+          : `Dipilih: ${selected.length ? selected.join(", ") : "-"} • Kunci: ${expected.join(", ")} (${rightPicks} benar, ${wrongPicks} kurang/keliru)`
+      };
+    }
+
+    function computeStats(list = QUESTIONS) {
+      let answered = 0;
+      let correct = 0;
+      list.forEach((q) => {
+        if (isQuestionAnswered(q)) answered += 1;
+        if (evaluateQuestion(q).isFullCorrect) correct += 1;
+      });
+      return {
+        answered,
+        correct,
+        total: list.length,
+        percentage: list.length ? Math.round((correct / list.length) * 100) : 0
+      };
+    }
+
+    function formatTimer(sec) {
+      const safe = Math.max(0, sec);
+      const mins = Math.floor(safe / 60);
+      const rem = safe % 60;
+      return `${String(mins).padStart(2, "0")}:${String(rem).padStart(2, "0")}`;
+    }
+
+    function startExamTimerIfNeeded() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      if (state.mode === "exam" && !state.submittedExam) {
+        timerInterval = setInterval(() => {
+          if (state.mode !== "exam" || state.submittedExam) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            return;
+          }
+          state.remainingSeconds -= 1;
+          const display = document.getElementById("timerDisplay");
+          if (display) display.textContent = formatTimer(state.remainingSeconds);
+
+          if (state.remainingSeconds <= 0) {
+            state.remainingSeconds = 0;
+            clearInterval(timerInterval);
+            timerInterval = null;
+            state.submittedExam = true;
+            saveState();
+            renderAll();
+            document.getElementById("summarySection")?.scrollIntoView({ behavior: "smooth" });
+          } else if (state.remainingSeconds % 15 === 0) {
+            saveState();
+          }
+        }, 1000);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatCaseText(text) {
+      return escapeHtml(text).replace(/\n/g, "<br />");
+    }
+
+    /**
+     * Render Functions
+     */
+    function renderTopAndControls() {
+      const filtered = getFilteredQuestions();
+      const currentQ = getCurrentQuestion();
+      const allStats = computeStats(QUESTIONS);
+      const pckStats = computeStats(QUESTIONS.filter((q) => q.domain === "PCK"));
+      const pedStats = computeStats(QUESTIONS.filter((q) => q.domain === "PEDAGOGI"));
+
+      // Mode badge & buttons
+      const modeBadge = document.getElementById("modeBadge");
+      const modePracticeBtn = document.getElementById("modePracticeBtn");
+      const modeExamBtn = document.getElementById("modeExamBtn");
+      const timerChip = document.getElementById("timerChip");
+      const timerDisplay = document.getElementById("timerDisplay");
+
+      if (state.mode === "practice") {
+        modeBadge.textContent = "Mode Latihan";
+        modeBadge.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200";
+        modePracticeBtn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border bg-blue-600 text-white border-blue-600 shadow-xs transition cursor-pointer flex items-center gap-2";
+        modeExamBtn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition cursor-pointer flex items-center gap-2";
+        timerChip.classList.add("hidden");
+        timerChip.classList.remove("flex");
+      } else {
+        modeBadge.textContent = "Mode Simulasi Ujian";
+        modeBadge.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200";
+        modeExamBtn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border bg-indigo-600 text-white border-indigo-600 shadow-xs transition cursor-pointer flex items-center gap-2";
+        modePracticeBtn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition cursor-pointer flex items-center gap-2";
+        timerChip.classList.remove("hidden");
+        timerChip.classList.add("flex");
+        timerDisplay.textContent = formatTimer(state.remainingSeconds);
+      }
+
+      // Header stats
+      document.getElementById("headerAnswered").textContent = `${allStats.answered}/${allStats.total}`;
+      document.getElementById("sidebarSummaryText").textContent = `${allStats.answered}/${allStats.total} dijawab`;
+      document.getElementById("pckAnsweredMini").textContent = `${pckStats.answered}/50`;
+      document.getElementById("pedAnsweredMini").textContent = `${pedStats.answered}/30`;
+
+      if (state.mode === "practice") {
+        document.getElementById("scoreLabel").textContent = "Tepat:";
+        document.getElementById("headerScore").textContent = `${allStats.correct}/${allStats.total}`;
+      } else {
+        document.getElementById("scoreLabel").textContent = state.submittedExam ? "Skor:" : "Terjawab:";
+        document.getElementById("headerScore").textContent = state.submittedExam
+          ? `${allStats.correct}/${allStats.total} (${allStats.percentage}%)`
+          : `${allStats.answered}/${allStats.total}`;
+      }
+
+      // Progress bar
+      if (currentQ && filtered.length > 0) {
+        const posInFiltered = filtered.findIndex((item) => item.id === currentQ.id) + 1;
+        const pct = (posInFiltered / filtered.length) * 100;
+        document.getElementById("progressBarFill").style.width = `${pct}%`;
+        document.getElementById("progressText").textContent =
+          filtered.length === QUESTIONS.length
+            ? `Soal ${currentQ.id} / 80`
+            : `Soal #${currentQ.id} (${posInFiltered}/${filtered.length} filter)`;
+      } else {
+        document.getElementById("progressBarFill").style.width = "0%";
+        document.getElementById("progressText").textContent = "0 soal cocok";
+      }
+
+      // Domain filter buttons
+      const domainMeta = [
+        { key: "ALL", label: "Semua (80)" },
+        { key: "PCK", label: "PCK Informatika (50)" },
+        { key: "PEDAGOGI", label: "Pedagogi Umum (30)" }
+      ];
+      document.querySelectorAll(".domain-filter-btn").forEach((btn) => {
+        const k = btn.getAttribute("data-domain");
+        const meta = domainMeta.find((m) => m.key === k);
+        if (meta) btn.textContent = meta.label;
+        const active = state.domainFilter === k;
+        btn.className = active
+          ? "domain-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border bg-slate-900 text-white border-slate-900 transition cursor-pointer"
+          : "domain-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition cursor-pointer";
+      });
+
+      // Format filter buttons
+      document.querySelectorAll(".format-filter-btn").forEach((btn) => {
+        const k = btn.getAttribute("data-format");
+        const active = state.formatFilter === k;
+        btn.className = active
+          ? "format-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border bg-blue-600 text-white border-blue-600 transition cursor-pointer"
+          : "format-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold border bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition cursor-pointer";
+      });
+
+      // Filter banner
+      const banner = document.getElementById("filterInfoBanner");
+      const bannerText = document.getElementById("filterInfoText");
+      if (state.domainFilter !== "ALL" || state.formatFilter !== "ALL") {
+        banner.classList.remove("hidden");
+        banner.classList.add("flex");
+        bannerText.textContent = `Filter aktif menampilkan ${filtered.length} dari 80 soal.`;
+      } else {
+        banner.classList.add("hidden");
+        banner.classList.remove("flex");
+      }
+
+      // Prev / Next / Flag buttons
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const flagBtn = document.getElementById("flagBtn");
+      const flagBtnText = document.getElementById("flagBtnText");
+
+      if (!currentQ || filtered.length === 0) {
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        flagBtn.disabled = true;
+      } else {
+        const idx = filtered.findIndex((item) => item.id === currentQ.id);
+        prevBtn.disabled = idx <= 0;
+        nextBtn.disabled = idx >= filtered.length - 1;
+        flagBtn.disabled = false;
+
+        const isFlagged = !!state.flagged[currentQ.id];
+        flagBtn.className = isFlagged
+          ? "inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border bg-amber-100 border-amber-400 text-amber-900 text-xs sm:text-sm font-bold transition cursor-pointer"
+          : "inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border bg-white border-slate-300 hover:bg-amber-50 text-slate-700 text-xs sm:text-sm font-bold transition cursor-pointer";
+        flagBtnText.textContent = isFlagged ? "Ragu-Ragu (Aktif)" : "Ragu-Ragu";
+      }
+    }
+
+    function renderQuestionCard() {
+      const container = document.getElementById("questionCard");
+      const q = getCurrentQuestion();
+
+      if (!q) {
+        container.innerHTML = `
+          <div class="p-8 text-center">
+            <p class="text-base font-extrabold text-slate-800">Tidak ada soal yang sesuai dengan kombinasi filter saat ini.</p>
+            <p class="text-sm text-slate-500 mt-1">Silakan ubah filter domain atau bentuk soal, atau tampilkan seluruh 80 soal.</p>
+            <button type="button" id="emptyResetFilterBtn" class="mt-4 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold cursor-pointer">
+              Reset Filter (80 Soal)
+            </button>
+          </div>
+        `;
+        document.getElementById("emptyResetFilterBtn")?.addEventListener("click", () => {
+          state.domainFilter = "ALL";
+          state.formatFilter = "ALL";
+          saveState();
+          renderAll();
+        });
+        return;
+      }
+
+      const showFeedback = state.mode === "practice" && !!state.checkedInPractice[q.id];
+      const evalResult = evaluateQuestion(q);
+
+      const domainBadgeClass =
+        q.domain === "PCK"
+          ? "bg-blue-100 text-blue-800 border-blue-200"
+          : "bg-indigo-100 text-indigo-800 border-indigo-200";
+
+      const formatBadgeClass =
+        q.format === "PG"
+          ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+          : q.format === "MCMA"
+          ? "bg-violet-50 text-violet-800 border-violet-200"
+          : "bg-amber-50 text-amber-900 border-amber-200";
+
+      let bodyHtml = "";
+
+      if (q.format === "PG" || q.format === "MCMA") {
+        const isSingle = q.format === "PG";
+        const inputType = isSingle ? "radio" : "checkbox";
+        const selectedKeys = Array.isArray(state.answers[q.id]) ? state.answers[q.id] : [];
+
+        bodyHtml += `<div class="space-y-2.5 mt-4">`;
+        q.options.forEach((opt) => {
+          const isSelected = selectedKeys.includes(opt.key);
+          const isKeyOption = q.correctKeys.includes(opt.key);
+
+          let cardStyle = "border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/40 text-slate-700";
+          let badgeStyle = "bg-slate-100 text-slate-700 border-slate-300";
+
+          if (showFeedback) {
+            if (isKeyOption && isSelected) {
+              cardStyle = "border-emerald-400 bg-emerald-50/80 text-emerald-950 ring-1 ring-emerald-400";
+              badgeStyle = "bg-emerald-600 text-white border-emerald-600";
+            } else if (isKeyOption && !isSelected) {
+              cardStyle = "border-emerald-400 bg-emerald-50/40 text-emerald-900 border-dashed";
+              badgeStyle = "bg-emerald-100 text-emerald-800 border-emerald-400";
+            } else if (!isKeyOption && isSelected) {
+              cardStyle = "border-rose-400 bg-rose-50/80 text-rose-950 ring-1 ring-rose-300";
+              badgeStyle = "bg-rose-600 text-white border-rose-600";
+            } else {
+              cardStyle = "border-slate-200 bg-slate-50/50 text-slate-500";
+            }
+          } else if (isSelected) {
+            cardStyle = "border-blue-500 bg-blue-50/80 text-blue-950 ring-1 ring-blue-500";
+            badgeStyle = "bg-blue-600 text-white border-blue-600";
+          }
+
+          let statusTag = "";
+          if (showFeedback) {
+            if (isKeyOption && isSelected) {
+              statusTag = `<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">✓ Kunci & Dipilih</span>`;
+            } else if (isKeyOption && !isSelected) {
+              statusTag = `<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">Kunci</span>`;
+            } else if (!isKeyOption && isSelected) {
+              statusTag = `<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800">✕ Bukan Kunci</span>`;
+            }
+          }
+
+          bodyHtml += `
+            <label class="flex items-start gap-3.5 p-3.5 sm:p-4 rounded-xl border transition cursor-pointer select-none ${cardStyle}">
+              <input
+                type="${inputType}"
+                name="q_opt_${q.id}"
+                value="${opt.key}"
+                ${isSelected ? "checked" : ""}
+                class="q-choice-input mt-1 h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500 shrink-0 cursor-pointer"
+              />
+              <span class="w-7 h-7 rounded-lg border text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5 ${badgeStyle}">
+                ${opt.key}
+              </span>
+              <span class="text-sm leading-relaxed flex-1">
+                ${escapeHtml(opt.text)}${statusTag}
+              </span>
+            </label>
+          `;
+        });
+        bodyHtml += `</div>`;
+      } else {
+        // PGK Benar/Salah (4 pernyataan)
+        const bsAns = state.answers[q.id] || {};
+        bodyHtml += `
+          <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+            <table class="min-w-full divide-y divide-slate-200 text-sm">
+              <thead class="bg-slate-50 text-slate-700">
+                <tr>
+                  <th class="py-3 px-3 sm:px-4 text-left font-bold w-12">No.</th>
+                  <th class="py-3 px-3 sm:px-4 text-left font-bold">Pernyataan Analisis Kasus</th>
+                  <th class="py-3 px-3 sm:px-4 text-center font-bold w-40 sm:w-48">Respons</th>
+                  ${showFeedback ? `<th class="py-3 px-3 sm:px-4 text-center font-bold w-24">Kunci</th>` : ""}
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 bg-white">
+        `;
+
+        q.statements.forEach((st, idx) => {
+          const chosen = bsAns[st.id] || null;
+          const stCorrect = chosen === st.correct;
+
+          const benarCls =
+            chosen === "Benar"
+              ? "bg-emerald-600 text-white border-emerald-600 shadow-2xs"
+              : "bg-white hover:bg-emerald-50 text-slate-700 border-slate-300";
+          const salahCls =
+            chosen === "Salah"
+              ? "bg-rose-600 text-white border-rose-600 shadow-2xs"
+              : "bg-white hover:bg-rose-50 text-slate-700 border-slate-300";
+
+          const rowCls = showFeedback
+            ? stCorrect ? "bg-emerald-50/35" : "bg-rose-50/45"
+            : "";
+
+          bodyHtml += `
+            <tr class="${rowCls} transition-colors">
+              <td class="py-3.5 px-3 sm:px-4 font-bold text-slate-600 align-top">${idx + 1}</td>
+              <td class="py-3.5 px-3 sm:px-4 text-slate-800 leading-relaxed align-top">${escapeHtml(st.text)}</td>
+              <td class="py-3.5 px-3 sm:px-4 align-middle">
+                <div class="flex items-center justify-center gap-2">
+                  <button type="button" data-stmt-id="${st.id}" data-val="Benar" class="bs-choice-btn px-3 py-1.5 rounded-lg border text-xs font-bold transition cursor-pointer ${benarCls}">Benar</button>
+                  <button type="button" data-stmt-id="${st.id}" data-val="Salah" class="bs-choice-btn px-3 py-1.5 rounded-lg border text-xs font-bold transition cursor-pointer ${salahCls}">Salah</button>
+                </div>
+              </td>
+              ${
+                showFeedback
+                  ? `<td class="py-3.5 px-3 sm:px-4 text-center align-middle">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold ${
+                        st.correct === "Benar" ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
+                      }">${st.correct}</span>
+                    </td>`
+                  : ""
+              }
+            </tr>
+          `;
+        });
+
+        bodyHtml += `</tbody></table></div>`;
+      }
+
+      // Practice or Exam footer action inside card
+      let actionHtml = "";
+      const hasAny = isQuestionPartiallyAnswered(q) || isQuestionAnswered(q);
+      if (state.mode === "practice") {
+        const answered = isQuestionAnswered(q);
+        actionHtml = `
+          <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+            <div class="text-xs text-slate-500">
+              ${
+                q.format === "PG"
+                  ? "Pilih satu jawaban yang paling tepat."
+                  : q.format === "MCMA"
+                  ? "PGK MCMA: pilih seluruh opsi benar tanpa kekurangan atau pilihan keliru."
+                  : "PGK Benar/Salah: beri respons Benar atau Salah pada seluruh 4 pernyataan."
+              }
+            </div>
+            <div class="flex items-center gap-2">
+              ${
+                hasAny
+                  ? `<button type="button" id="clearAnswerBtn" class="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition cursor-pointer">Hapus Pilihan</button>`
+                  : ""
+              }
+              <button
+                type="button"
+                id="checkAnswerBtn"
+                class="px-4 py-2 rounded-xl ${
+                  answered ? "bg-blue-600 hover:bg-blue-700 text-white shadow-xs" : "bg-slate-200 hover:bg-slate-300 text-slate-700"
+                } text-xs sm:text-sm font-bold transition cursor-pointer"
+              >
+                ${showFeedback ? "Perbarui Cek Jawaban" : "Periksa Jawaban"}
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (hasAny) {
+        actionHtml = `
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+            <span class="text-xs text-slate-400">Mode Simulasi Ujian — Jawaban tersimpan otomatis.</span>
+            <button type="button" id="clearAnswerBtn" class="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition cursor-pointer">Kosongkan Jawaban</button>
+          </div>
+        `;
+      }
+
+      let feedbackHtml = "";
+      if (showFeedback) {
+        const bannerClass = evalResult.isFullCorrect
+          ? "bg-emerald-50 border-emerald-200 text-emerald-950"
+          : "bg-amber-50 border-amber-300 text-amber-950";
+
+        const badgeStatus = evalResult.isFullCorrect
+          ? `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-600 text-white">✓ Tepat Sepenuhnya</span>`
+          : `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-600 text-white">△ ${escapeHtml(evalResult.detail)}</span>`;
+
+        let keyLine = "";
+        if (q.format === "BS") {
+          keyLine = q.statements.map((st, i) => `Pernyataan ${i + 1}: <strong>${st.correct}</strong>`).join(" • ");
+          keyLine = `<p class="text-xs sm:text-sm text-slate-800 mt-2">Kunci Tabel: ${keyLine}</p>`;
+        } else {
+          keyLine = `<p class="text-xs sm:text-sm font-bold text-slate-800 mt-2">Kunci Jawaban: <span class="font-mono px-2 py-0.5 rounded bg-white border border-slate-200 text-blue-700">${q.correctKeys.join(", ")}</span></p>`;
+        }
+
+        feedbackHtml = `
+          <div class="mx-5 sm:mx-6 mb-6 p-4 sm:p-5 rounded-2xl border ${bannerClass} fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h4 class="text-sm font-extrabold">Pembahasan & Kunci Jawaban</h4>
+              ${badgeStatus}
+            </div>
+            ${keyLine}
+            <p class="text-xs sm:text-sm leading-relaxed mt-2.5 text-slate-700">${escapeHtml(q.explanation)}</p>
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="p-5 sm:p-6">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-100">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${domainBadgeClass}">${escapeHtml(q.domainLabel)}</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${formatBadgeClass}">${escapeHtml(q.formatLabel)}</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">${escapeHtml(q.competency)}</span>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Soal #${q.id} / 80</span>
+          </div>
+
+          <h2 class="mt-4 text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">
+            ${q.id}. ${escapeHtml(q.title)}
+          </h2>
+
+          <div class="mt-3.5 p-4 rounded-xl bg-slate-50 border-l-4 border-blue-600 text-sm text-slate-700 leading-relaxed">
+            <div class="text-[11px] font-extrabold uppercase tracking-wider text-blue-700 mb-1">Studi Kasus</div>
+            <div>${formatCaseText(q.caseText)}</div>
+          </div>
+
+          <p class="mt-4 text-sm sm:text-[15px] font-bold text-slate-900 leading-relaxed">${escapeHtml(q.prompt)}</p>
+
+          ${bodyHtml}
+          ${actionHtml}
+        </div>
+        ${feedbackHtml}
+      `;
+
+      bindCardEvents(q);
+    }
+
+    function bindCardEvents(q) {
+      if (q.format === "PG" || q.format === "MCMA") {
+        document.querySelectorAll(".q-choice-input").forEach((input) => {
+          input.addEventListener("change", () => {
+            if (q.format === "PG") {
+              const checked = document.querySelector(".q-choice-input:checked");
+              state.answers[q.id] = checked ? [checked.value] : [];
+            } else {
+              state.answers[q.id] = Array.from(document.querySelectorAll(".q-choice-input:checked")).map((el) => el.value);
+            }
+            if (state.mode === "practice" && state.checkedInPractice[q.id]) {
+              state.checkedInPractice[q.id] = false;
+            }
+            saveState();
+            renderAll();
+          });
+        });
+      } else {
+        document.querySelectorAll(".bs-choice-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const stmtId = btn.getAttribute("data-stmt-id");
+            const val = btn.getAttribute("data-val");
+            if (!state.answers[q.id]) state.answers[q.id] = {};
+            if (state.answers[q.id][stmtId] === val) {
+              delete state.answers[q.id][stmtId];
+            } else {
+              state.answers[q.id][stmtId] = val;
+            }
+            if (state.mode === "practice" && state.checkedInPractice[q.id]) {
+              state.checkedInPractice[q.id] = false;
+            }
+            saveState();
+            renderAll();
+          });
+        });
+      }
+
+      document.getElementById("checkAnswerBtn")?.addEventListener("click", () => {
+        state.checkedInPractice[q.id] = true;
+        saveState();
+        renderAll();
+      });
+
+      document.getElementById("clearAnswerBtn")?.addEventListener("click", () => {
+        delete state.answers[q.id];
+        delete state.checkedInPractice[q.id];
+        saveState();
+        renderAll();
+      });
+    }
+
+    function renderNavGrids() {
+      const currentQ = getCurrentQuestion();
+      const activeId = currentQ ? currentQ.id : -1;
+
+      const buildGridHtml = (list) =>
+        list
+          .map((q) => {
+            const isCurrent = q.id === activeId;
+            const isFlagged = !!state.flagged[q.id];
+            const answered = isQuestionAnswered(q);
+            const partial = !answered && isQuestionPartiallyAnswered(q);
+
+            let cls = "bg-white hover:bg-slate-100 text-slate-700 border-slate-300";
+            if (isCurrent) {
+              cls = "bg-blue-600 text-white border-blue-700 ring-2 ring-blue-300 font-extrabold";
+            } else if (isFlagged) {
+              cls = "bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-400 font-bold";
+            } else if (answered) {
+              cls = "bg-emerald-100 hover:bg-emerald-200 text-emerald-950 border-emerald-400 font-bold";
+            } else if (partial) {
+              cls = "bg-sky-50 hover:bg-sky-100 text-sky-900 border-sky-300 font-semibold";
+            }
+
+            const dot = isFlagged
+              ? `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-500 border border-white"></span>`
+              : "";
+
+            return `
+              <button
+                type="button"
+                data-jump-id="${q.id}"
+                class="jump-q-btn relative h-8 rounded-lg border text-[11px] transition cursor-pointer flex items-center justify-center ${cls}"
+                title="Soal ${q.id} (${q.domainLabel} • ${q.formatLabel})"
+              >
+                ${q.id}${dot}
+              </button>
+            `;
+          })
+          .join("");
+
+      const pckList = QUESTIONS.filter((q) => q.domain === "PCK");
+      const pedList = QUESTIONS.filter((q) => q.domain === "PEDAGOGI");
+
+      const pckHtml = buildGridHtml(pckList);
+      const pedHtml = buildGridHtml(pedList);
+
+      document.getElementById("sidebarGridPCK").innerHTML = pckHtml;
+      document.getElementById("sidebarGridPedagogi").innerHTML = pedHtml;
+      document.getElementById("modalGridPCK").innerHTML = pckHtml;
+      document.getElementById("modalGridPedagogi").innerHTML = pedHtml;
+
+      document.querySelectorAll(".jump-q-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetId = parseInt(btn.getAttribute("data-jump-id"), 10);
+          const targetQ = QUESTIONS.find((item) => item.id === targetId);
+          if (targetQ) {
+            // Jika soal tujuan tidak masuk filter aktif, reset filter agar soal dapat ditampilkan
+            const inFilter =
+              (state.domainFilter === "ALL" || targetQ.domain === state.domainFilter) &&
+              (state.formatFilter === "ALL" || targetQ.format === state.formatFilter);
+            if (!inFilter) {
+              state.domainFilter = "ALL";
+              state.formatFilter = "ALL";
+            }
+            state.currentQuestionId = targetId;
+            state.submittedExam = false;
+            saveState();
+            closeNavModal();
+            renderAll();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        });
+      });
+    }
+
+    function renderSummarySection() {
+      const section = document.getElementById("summarySection");
+      if (!state.submittedExam) {
+        section.classList.add("hidden");
+        section.innerHTML = "";
+        return;
+      }
+
+      section.classList.remove("hidden");
+
+      const totalStats = computeStats(QUESTIONS);
+      const pckStats = computeStats(QUESTIONS.filter((q) => q.domain === "PCK"));
+      const pedStats = computeStats(QUESTIONS.filter((q) => q.domain === "PEDAGOGI"));
+
+      const pgStats = computeStats(QUESTIONS.filter((q) => q.format === "PG"));
+      const bsStats = computeStats(QUESTIONS.filter((q) => q.format === "BS"));
+      const mcmaStats = computeStats(QUESTIONS.filter((q) => q.format === "MCMA"));
+
+      const filteredReview = QUESTIONS.filter((q) => {
+        const res = evaluateQuestion(q);
+        if (state.reviewFilter === "correct") return res.isFullCorrect;
+        if (state.reviewFilter === "wrong") return !res.isFullCorrect;
+        return true;
+      });
+
+      const reviewHtml = filteredReview
+        .map((q) => {
+          const res = evaluateQuestion(q);
+          const ans = state.answers[q.id];
+
+          let userDisp = "";
+          let keyDisp = "";
+          if (q.format === "BS") {
+            const safe = ans || {};
+            userDisp = q.statements.map((st, idx) => `#${idx + 1}:${safe[st.id] || "-"}`).join(" | ");
+            keyDisp = q.statements.map((st, idx) => `#${idx + 1}:${st.correct}`).join(" | ");
+          } else {
+            userDisp = Array.isArray(ans) && ans.length ? ans.join(", ") : "Belum dijawab";
+            keyDisp = q.correctKeys.join(", ");
+          }
+
+          return `
+            <div class="p-4 sm:p-5 rounded-2xl border ${
+              res.isFullCorrect ? "border-emerald-200 bg-emerald-50/30" : "border-rose-200 bg-rose-50/30"
+            }">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-xs font-extrabold px-2.5 py-1 rounded-full ${
+                    res.isFullCorrect ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"
+                  }">
+                    ${res.isFullCorrect ? "✓ Benar" : "✕ Belum Tepat"}
+                  </span>
+                  <span class="text-xs font-bold text-slate-600">
+                    Soal #${q.id} • ${escapeHtml(q.domainLabel)} • ${escapeHtml(q.formatLabel)}
+                  </span>
+                </div>
+                <button type="button" data-goto-id="${q.id}" class="goto-q-btn text-xs font-bold text-blue-600 hover:text-blue-800 underline cursor-pointer">
+                  Buka Soal
+                </button>
+              </div>
+
+              <h4 class="mt-2 text-sm sm:text-base font-extrabold text-slate-900">${escapeHtml(q.title)}</h4>
+              <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(q.competency)}</p>
+
+              <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 rounded-xl bg-white border border-slate-200/80 text-xs">
+                <div>
+                  <span class="text-[11px] font-bold uppercase text-slate-400 block">Jawaban Anda</span>
+                  <span class="font-semibold text-slate-800">${escapeHtml(userDisp)}</span>
+                </div>
+                <div>
+                  <span class="text-[11px] font-bold uppercase text-slate-400 block">Kunci Jawaban</span>
+                  <span class="font-bold text-emerald-700">${escapeHtml(keyDisp)}</span>
+                </div>
+              </div>
+
+              <p class="mt-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900">Pembahasan:</strong> ${escapeHtml(q.explanation)}
+              </p>
+            </div>
+          `;
+        })
+        .join("");
+
+      section.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-100">
+            <div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                Rekapitulasi Hasil UTBK UKPPPG 2026 (80 Soal)
+              </span>
+              <h2 class="mt-2 text-xl sm:text-2xl font-extrabold text-slate-900">
+                Skor Keseluruhan: ${totalStats.correct} / ${totalStats.total} (${totalStats.percentage}%)
+              </h2>
+              <p class="text-sm text-slate-600 mt-1">
+                Terjawab penuh: <strong>${totalStats.answered}</strong> dari <strong>${totalStats.total}</strong> soal.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2.5">
+              <button type="button" id="backToQuizBtn" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-bold transition cursor-pointer">
+                Kembali ke Soal
+              </button>
+              <button type="button" id="retakeAllBtn" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-xs transition cursor-pointer">
+                Ulangi Dari Soal 1
+              </button>
+            </div>
+          </div>
+
+          <!-- Domain Breakdown -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-200">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-blue-700">PCK Informatika (Soal 1–50)</div>
+              <div class="mt-1 text-2xl font-extrabold text-slate-900">${pckStats.correct} / ${pckStats.total} (${pckStats.percentage}%)</div>
+              <div class="text-xs text-slate-600 mt-0.5">Terjawab: ${pckStats.answered}/${pckStats.total}</div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-indigo-700">Pedagogi Umum (Soal 51–80)</div>
+              <div class="mt-1 text-2xl font-extrabold text-slate-900">${pedStats.correct} / ${pedStats.total} (${pedStats.percentage}%)</div>
+              <div class="text-xs text-slate-600 mt-0.5">Terjawab: ${pedStats.answered}/${pedStats.total}</div>
+            </div>
+          </div>
+
+          <!-- Question Format Breakdown -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-bold text-slate-500">PG Tunggal</div>
+              <div class="text-lg font-extrabold text-slate-900 mt-0.5">${pgStats.correct}/${pgStats.total} (${pgStats.percentage}%)</div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-bold text-slate-500">PGK Benar/Salah (4 Pernyataan)</div>
+              <div class="text-lg font-extrabold text-slate-900 mt-0.5">${bsStats.correct}/${bsStats.total} (${bsStats.percentage}%)</div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-bold text-slate-500">PGK MCMA</div>
+              <div class="text-lg font-extrabold text-slate-900 mt-0.5">${mcmaStats.correct}/${mcmaStats.total} (${mcmaStats.percentage}%)</div>
+            </div>
+          </div>
+
+          <!-- Review List -->
+          <div class="mt-8 pt-6 border-t border-slate-100">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h3 class="text-base font-extrabold text-slate-900">
+                Pembahasan (${filteredReview.length} Soal)
+              </h3>
+              <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                <button type="button" data-filter="all" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${state.reviewFilter === "all" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-600"}">
+                  Semua (80)
+                </button>
+                <button type="button" data-filter="wrong" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${state.reviewFilter === "wrong" ? "bg-white text-rose-700 shadow-2xs" : "text-slate-600"}">
+                  Perlu Evaluasi (${QUESTIONS.length - totalStats.correct})
+                </button>
+                <button type="button" data-filter="correct" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${state.reviewFilter === "correct" ? "bg-white text-emerald-700 shadow-2xs" : "text-slate-600"}">
+                  Benar (${totalStats.correct})
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              ${reviewHtml || `<p class="text-sm text-slate-500 py-6 text-center">Tidak ada soal pada kategori ini.</p>`}
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("backToQuizBtn")?.addEventListener("click", () => {
+        state.submittedExam = false;
+        saveState();
+        renderAll();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      document.getElementById("retakeAllBtn")?.addEventListener("click", () => {
+        openConfirmModal(
+          "Ulangi Dari Soal 1?",
+          "Semua jawaban, penanda ragu-ragu, dan rekapitulasi saat ini akan direset.",
+          () => {
+            resetQuiz(state.mode);
+          }
+        );
+      });
+
+      document.querySelectorAll(".review-filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.reviewFilter = btn.getAttribute("data-filter");
+          saveState();
+          renderSummarySection();
+        });
+      });
+
+      document.querySelectorAll(".goto-q-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetId = parseInt(btn.getAttribute("data-goto-id"), 10);
+          state.domainFilter = "ALL";
+          state.formatFilter = "ALL";
+          state.currentQuestionId = targetId;
+          state.submittedExam = false;
+          saveState();
+          renderAll();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+    }
+
+    function renderAll() {
+      renderTopAndControls();
+      renderQuestionCard();
+      renderNavGrids();
+      renderSummarySection();
+    }
+
+    /**
+     * Modals & Actions
+     */
+    function openNavModal() {
+      renderNavGrids();
+      const m = document.getElementById("navModal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeNavModal() {
+      const m = document.getElementById("navModal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function openJuknisModal() {
+      const m = document.getElementById("juknisModal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeJuknisModal() {
+      const m = document.getElementById("juknisModal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function openConfirmModal(title, message, onConfirm) {
+      document.getElementById("confirmTitle").textContent = title;
+      document.getElementById("confirmMessage").textContent = message;
+      confirmCallback = onConfirm;
+      const m = document.getElementById("confirmModal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeConfirmModal() {
+      confirmCallback = null;
+      const m = document.getElementById("confirmModal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function resetQuiz(targetMode = state.mode) {
+      const fresh = defaultState();
+      fresh.mode = targetMode;
+      state = fresh;
+      saveState();
+      startExamTimerIfNeeded();
+      renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function finishQuiz() {
+      closeNavModal();
+      const stats = computeStats(QUESTIONS);
+      const unanswered = stats.total - stats.answered;
+
+      const proceed = () => {
+        state.submittedExam = true;
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        saveState();
+        renderAll();
+        document.getElementById("summarySection")?.scrollIntoView({ behavior: "smooth" });
+      };
+
+      if (unanswered > 0 && !state.submittedExam) {
+        openConfirmModal(
+          "Masih Ada Soal Belum Terjawab",
+          `Terdapat ${unanswered} dari 80 soal yang belum dijawab penuh. Tetap selesaikan dan tampilkan rekapitulasi sekarang?`,
+          proceed
+        );
+      } else {
+        proceed();
+      }
+    }
+
+    /**
+     * Event Listeners
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+      startExamTimerIfNeeded();
+      renderAll();
+
+      document.getElementById("modePracticeBtn").addEventListener("click", () => {
+        if (state.mode !== "practice") {
+          state.mode = "practice";
+          state.submittedExam = false;
+          saveState();
+          startExamTimerIfNeeded();
+          renderAll();
+        }
+      });
+
+      document.getElementById("modeExamBtn").addEventListener("click", () => {
+        if (state.mode !== "exam") {
+          state.mode = "exam";
+          state.submittedExam = false;
+          if (state.remainingSeconds <= 0) state.remainingSeconds = EXAM_DURATION_SEC;
+          saveState();
+          startExamTimerIfNeeded();
+          renderAll();
+        }
+      });
+
+      document.querySelectorAll(".domain-filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.domainFilter = btn.getAttribute("data-domain");
+          state.submittedExam = false;
+          const filtered = getFilteredQuestions();
+          if (filtered.length > 0 && !filtered.some((item) => item.id === state.currentQuestionId)) {
+            state.currentQuestionId = filtered[0].id;
+          }
+          saveState();
+          renderAll();
+        });
+      });
+
+      document.querySelectorAll(".format-filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.formatFilter = btn.getAttribute("data-format");
+          state.submittedExam = false;
+          const filtered = getFilteredQuestions();
+          if (filtered.length > 0 && !filtered.some((item) => item.id === state.currentQuestionId)) {
+            state.currentQuestionId = filtered[0].id;
+          }
+          saveState();
+          renderAll();
+        });
+      });
+
+      document.getElementById("clearFiltersBtn").addEventListener("click", () => {
+        state.domainFilter = "ALL";
+        state.formatFilter = "ALL";
+        saveState();
+        renderAll();
+      });
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        const filtered = getFilteredQuestions();
+        const currentQ = getCurrentQuestion();
+        if (!currentQ) return;
+        const idx = filtered.findIndex((item) => item.id === currentQ.id);
+        if (idx > 0) {
+          state.currentQuestionId = filtered[idx - 1].id;
+          saveState();
+          renderAll();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        const filtered = getFilteredQuestions();
+        const currentQ = getCurrentQuestion();
+        if (!currentQ) return;
+        const idx = filtered.findIndex((item) => item.id === currentQ.id);
+        if (idx >= 0 && idx < filtered.length - 1) {
+          state.currentQuestionId = filtered[idx + 1].id;
+          saveState();
+          renderAll();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      document.getElementById("flagBtn").addEventListener("click", () => {
+        const q = getCurrentQuestion();
+        if (!q) return;
+        state.flagged[q.id] = !state.flagged[q.id];
+        saveState();
+        renderAll();
+      });
+
+      document.getElementById("finishExamBtn").addEventListener("click", finishQuiz);
+      document.getElementById("modalFinishBtn").addEventListener("click", finishQuiz);
+
+      document.getElementById("openNavModalBtn").addEventListener("click", openNavModal);
+      document.getElementById("closeNavModalBtn").addEventListener("click", closeNavModal);
+      document.getElementById("navModal").addEventListener("click", (e) => {
+        if (e.target.id === "navModal") closeNavModal();
+      });
+
+      document.getElementById("openJuknisBtn").addEventListener("click", openJuknisModal);
+      document.getElementById("closeJuknisModalBtn").addEventListener("click", closeJuknisModal);
+      document.getElementById("closeJuknisBottomBtn").addEventListener("click", closeJuknisModal);
+      document.getElementById("juknisModal").addEventListener("click", (e) => {
+        if (e.target.id === "juknisModal") closeJuknisModal();
+      });
+
+      document.getElementById("confirmCancelBtn").addEventListener("click", closeConfirmModal);
+      document.getElementById("confirmOkBtn").addEventListener("click", () => {
+        const cb = confirmCallback;
+        closeConfirmModal();
+        if (typeof cb === "function") cb();
+      });
+      document.getElementById("confirmModal").addEventListener("click", (e) => {
+        if (e.target.id === "confirmModal") closeConfirmModal();
+      });
+
+      document.getElementById("resetTopBtn").addEventListener("click", () => {
+        openConfirmModal(
+          "Reset Seluruh Jawaban (80 Soal)?",
+          "Semua jawaban, status ragu-ragu, dan penyimpanan lokal akan dikosongkan.",
+          () => resetQuiz(state.mode)
+        );
+      });
+
+      document.addEventListener("keydown", (e) => {
+        const tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : "";
+        if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+        if (e.key === "Escape") {
+          closeNavModal();
+          closeJuknisModal();
+          closeConfirmModal();
+          return;
+        }
+
+        if (e.key === "ArrowLeft") {
+          document.getElementById("prevBtn")?.click();
+        } else if (e.key === "ArrowRight") {
+          document.getElementById("nextBtn")?.click();
+        } else if (e.key.toLowerCase() === "r") {
+          document.getElementById("flagBtn")?.click();
+        } else if (["1", "2", "3", "4", "5"].includes(e.key)) {
+          const q = getCurrentQuestion();
+          if (!q || (q.format !== "PG" && q.format !== "MCMA")) return;
+          const idx = parseInt(e.key, 10) - 1;
+          const opt = q.options[idx];
+          if (!opt) return;
+
+          if (q.format === "PG") {
+            state.answers[q.id] = [opt.key];
+          } else {
+            const cur = Array.isArray(state.answers[q.id]) ? [...state.answers[q.id]] : [];
+            const pos = cur.indexOf(opt.key);
+            if (pos >= 0) cur.splice(pos, 1);
+            else cur.push(opt.key);
+            state.answers[q.id] = cur;
+          }
+          if (state.mode === "practice" && state.checkedInPractice[q.id]) {
+            state.checkedInPractice[q.id] = false;
+          }
+          saveState();
+          renderAll();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
